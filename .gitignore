@@ -13,3 +13,5 @@
 
 # Binary (webeng for now, depends on go.mod package name)
 webeng
+server
+seeddb

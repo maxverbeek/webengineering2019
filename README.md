@@ -5,25 +5,27 @@ This repository contains our code for the music API for web engineering 2019.
 ## Usage
 
 ```bash
-go build
-./webeng -h # help
-./webeng    # listen on port 8080 (default)
+make
+./server -h # help
+./server    # listen on port 8080 (default)
+./seeddb    # todo, but seed database later when we have one
 ```
 
 ## Structural organisation
 
-Unlike most projects this one does not (yet) have a `cmd` directory that
-contains command entry points, such as `main.go`. This might possibly happen in
-the future if this gets too cluttered/big. At some point documentation will end
-up in the `doc` directory.
+Much like most go projects, this one has a `cmd` directory that contains all of
+the application entry points. The most commonly used one will be `cmd/server`
+which is the one that will start the server. The code for the server itself is
+contained in `api`. At some point documentation will end up in the `doc`
+directory.
 
 Currently this projects contains a single package (which might also change)
-that is the main package. In the main function we limit ourselves to some flag
-parsing, and immediately go into the `run()` function. This is because main
-cannot return an error, but `run()` can (which `main` will then format and
-print).
+that is the main package. In the main function in `cmd/server` we limit
+ourselves to some flag parsing, and immediately go into the `run()` function
+from `api/server.go`. This is because main cannot return an error, but `run()`
+can (which `main` will then format and print).
 
-Throughout the code you will find structs, such as the `config` struct and the
+Throughout the code you will find structs, such as the `Config` struct and the
 `server` struct. These are the way they are in the interest of reducing global
 variables.
 
