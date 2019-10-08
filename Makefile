@@ -5,3 +5,5 @@ server:
 
 seeddb:
 	go build -o seeddb ./cmd/seeddb
+
+.PHONY: server seeddb
