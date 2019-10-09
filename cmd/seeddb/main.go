@@ -13,7 +13,7 @@ import (
 	//_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
-var file string 
+var file string
 
 func main() {
 	flag.StringVar(&file, "f", "", "Read CSV data from `file`")
@@ -78,7 +78,7 @@ func run() error {
 
 	if file != "" {
 		csv, err = os.Open(file)
-		
+
 		if err != nil {
 			return err
 		}
