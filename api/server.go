@@ -29,6 +29,10 @@ func Run(conf *Config) error {
 		return err
 	}
 
+	db.AutoMigrate(&Song{})
+	db.AutoMigrate(&Artist{})
+	db.AutoMigrate(&Release{})
+
 	server := &server{
 		router: r,
 		db: db,

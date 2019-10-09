@@ -41,6 +41,12 @@ func run() error {
 		return err
 	}
 
+	defer db.Close()
+
+	db.AutoMigrate(&api.Artist{})
+	db.AutoMigrate(&api.Release{})
+	db.AutoMigrate(&api.Song{})
+
 	var (
 		csv io.ReadCloser
 	)
@@ -86,14 +92,18 @@ func run() error {
 	for _, song := range records {
 		if _, ok := artists[song.Artist.ArtistId]; !ok {
 			artists[song.Artist.ArtistId] = song.Artist
+			db.Create(&song.Artist)
 		}
 		if _, ok := releases[song.Release.ReleaseId]; !ok {
 			releases[song.Release.ReleaseId] = song.Release
+			db.Create(&song.Release)
 		}
 
 		song.Song.ArtistId  = song.Artist.ArtistId
 		song.Song.ReleaseId = song.Release.ReleaseId
 		songs[song.SongId] = song.Song
+
+		db.Create(&song.Song)
 	}
 
 	fmt.Printf("%#v\n", records[1000])
