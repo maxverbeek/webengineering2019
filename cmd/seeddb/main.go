@@ -6,11 +6,14 @@ import (
 	"io"
 	"os"
 	"log"
+	"sort"
 	"net/http"
 
+	"webeng/api"
+
 	"github.com/gocarina/gocsv"
-	//"github.com/jinzhu/gorm"
-	//_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
 var file string
@@ -26,49 +29,17 @@ func main() {
 }
 
 type MusicRecord struct {
-	ArtistFamiliarity           float64 `csv:"artist.familiarity"`
-	ArtistHotttnesss            float64 `csv:"artist.hotttnesss"`
-	ArtistId                    string  `csv:"artist.id"`
-	ArtistLatitude              float64 `csv:"artist.latitude"`
-	ArtistLocation              int     `csv:"artist.location"`
-	ArtistLongitude             float64 `csv:"artist.longitude"`
-	ArtistName                  string  `csv:"artist.name"`
-	ArtistSimilar               float64 `csv:"artist.similar"`
-	ArtistTerms                 string  `csv:"artist.terms"`
-	ArtistTermsFreq             float64 `csv:"artist.terms_freq"`
-	ReleaseId                   int     `csv:"release.id"`
-	ReleaseName                 int     `csv:"release.name"`
-	SongArtistMbtags            float64 `csv:"song.artist_mbtags"`
-	SongArtistMbtagsCount       float64 `csv:"song.artist_mbtags_count"`
-	SongBarsConfidence          float64 `csv:"song.bars_confidence"`
-	SongBarsStart               float64 `csv:"song.bars_start"`
-	SongBeatsConfidence         float64 `csv:"song.beats_confidence"`
-	SongBeatsStart              float64 `csv:"song.beats_start"`
-	SongDuration                float64 `csv:"song.duration"`
-	SongEndFadeIn               float64 `csv:"song.end_of_fade_in"`
-	SongHotttnesss              float64 `csv:"song.hotttnesss"`
-	SongId                      string  `csv:"song.id"`
-	SongKey                     float64 `csv:"song.key"`
-	SongKeyConfidence           float64 `csv:"song.key_confidence"`
-	SongLoudness                float64 `csv:"song.loudness"`
-	SongMode                    int     `csv:"song.mode"`
-	SongModeConfidence          float64 `csv:"song.mode_confidence"`
-	SongStartFadeOut            float64 `csv:"song.start_of_fade_out"`
-	SongTatumsConfidence        float64 `csv:"song.tatums_confidence"`
-	SongTatumsStart             float64 `csv:"song.tatums_start"`
-	SongTempo                   float64 `csv:"song.tempo"`
-	SongTimeSignature           float64 `csv:"song.time_signature"`
-	SongTimeSignatureConfidence float64 `csv:"song.time_signature_confidence"`
-	SongTitle                   int     `csv:"song.title"`
-	SongYear                    int     `csv:"song.year"`
+	api.Artist
+	api.Release
+	api.Song
 }
 
 func run() error {
-	//db, err := gorm.Open("sqlite3", "./music.db")
+	db, err := gorm.Open("sqlite3", "./music.db")
 
-	//if err != nil {
-	//return err
-	//}
+	if err != nil {
+	return err
+	}
 
 	var (
 		csv io.ReadCloser
@@ -106,7 +77,22 @@ func run() error {
 
 	fmt.Println("Parsed data")
 
-	fmt.Printf("%#v\n", records[0])
+	sort.Slice(records, func(i, j int) bool {
+		return records[i].SongYear > records[j].SongYear
+	})
+
+	artists := make(map[string]api.Artist)
+	songs := make(map[string]api.Song)
+
+	for _, song := range records {
+		if _, ok := artists[song.ArtistId]; !ok {
+			artists[song.ArtistId] = song.Artist
+		}
+
+		songs[song.SongId] = song.Song
+	}
+
+	fmt.Printf("%#v\n", records[1000])
 
 	return nil
 }
