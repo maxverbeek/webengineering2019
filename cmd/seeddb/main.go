@@ -89,22 +89,26 @@ func run() error {
 	songs := make(map[string]api.Song)
 	releases := make(map[int]api.Release)
 
+	tx := db.Begin()
+
 	for _, song := range records {
 		if _, ok := artists[song.Artist.ArtistId]; !ok {
 			artists[song.Artist.ArtistId] = song.Artist
-			db.Create(&song.Artist)
+			tx.Create(&song.Artist)
 		}
 		if _, ok := releases[song.Release.ReleaseId]; !ok {
 			releases[song.Release.ReleaseId] = song.Release
-			db.Create(&song.Release)
+			tx.Create(&song.Release)
 		}
 
 		song.Song.ArtistId  = song.Artist.ArtistId
 		song.Song.ReleaseId = song.Release.ReleaseId
 		songs[song.SongId] = song.Song
 
-		db.Create(&song.Song)
+		tx.Create(&song.Song)
 	}
+
+	tx.Commit()
 
 	fmt.Printf("%#v\n", records[1000])
 
