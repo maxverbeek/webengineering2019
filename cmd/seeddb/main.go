@@ -4,10 +4,10 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"os"
 	"log"
-	"sort"
 	"net/http"
+	"os"
+	"sort"
 
 	"webeng/api"
 
@@ -38,14 +38,13 @@ func run() error {
 	db, err := gorm.Open("sqlite3", "./music.db")
 
 	if err != nil {
-	return err
+		return err
 	}
 
 	var (
 		csv io.ReadCloser
 		err error
 	)
-
 
 	if file != "" {
 		csv, err = os.Open(file)

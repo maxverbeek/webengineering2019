@@ -2,10 +2,10 @@ package api
 
 import (
 	"encoding/json"
-	"net/http"
 	_ "github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"net/http"
 )
 
 type HttpResponse struct {
@@ -14,24 +14,29 @@ type HttpResponse struct {
 }
 
 type Artist struct {
-	ArtistFamiliarity           float64 `csv:"artist.familiarity"`
-	ArtistHotttnesss            float64 `csv:"artist.hotttnesss"`
-	ArtistId                    string  `csv:"artist.id"`
-	ArtistLatitude              float64 `csv:"artist.latitude"`
-	ArtistLocation              int     `csv:"artist.location"`
-	ArtistLongitude             float64 `csv:"artist.longitude"`
-	ArtistName                  string  `csv:"artist.name"`
-	ArtistSimilar               float64 `csv:"artist.similar"`
-	ArtistTerms                 string  `csv:"artist.terms"`
-	ArtistTermsFreq             float64 `csv:"artist.terms_freq"`
+	gorm.Model
+	ArtistFamiliarity float64 `csv:"artist.familiarity"`
+	ArtistHotttnesss  float64 `csv:"artist.hotttnesss"`
+	ArtistId          string  `csv:"artist.id"`
+	ArtistLatitude    float64 `csv:"artist.latitude"`
+	ArtistLocation    int     `csv:"artist.location"`
+	ArtistLongitude   float64 `csv:"artist.longitude"`
+	ArtistName        string  `csv:"artist.name"`
+	ArtistSimilar     float64 `csv:"artist.similar"`
+	ArtistTerms       string  `csv:"artist.terms"`
+	ArtistTermsFreq   float64 `csv:"artist.terms_freq"`
 }
 
 type Release struct {
-	ReleaseId                   int     `csv:"release.id"`
-	ReleaseName                 int     `csv:"release.name"`
+	gorm.Model
+	ReleaseId   int `csv:"release.id"`
+	ReleaseName int `csv:"release.name"`
 }
 
 type Song struct {
+	gorm.Model
+	AristId                     string
+	ReleaseId                   string
 	SongArtistMbtags            float64 `csv:"song.artist_mbtags"`
 	SongArtistMbtagsCount       float64 `csv:"song.artist_mbtags_count"`
 	SongBarsConfidence          float64 `csv:"song.bars_confidence"`
@@ -86,11 +91,11 @@ func (s *server) handleIndex() http.HandlerFunc {
 
 func (s *server) handleArtists() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-//		name := r.URL.Query()["name"]
-//		genre := r.URL.Query()["genre"]
-//		sort := r.URL.Query()["sort"]
-//		limit := r.URL.Query()["limit"]
-//		page := r.URL.Query()["page"]
+		//		name := r.URL.Query()["name"]
+		//		genre := r.URL.Query()["genre"]
+		//		sort := r.URL.Query()["sort"]
+		//		limit := r.URL.Query()["limit"]
+		//		page := r.URL.Query()["page"]
 
 		response := HttpResponse{
 			status:  http.StatusOK,
@@ -103,7 +108,7 @@ func (s *server) handleArtists() http.HandlerFunc {
 
 func (s *server) handleArtist() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-//		id := mux.Vars(r)["artist_id"]
+		//		id := mux.Vars(r)["artist_id"]
 
 		response := HttpResponse{
 			status:  http.StatusOK,
@@ -116,7 +121,7 @@ func (s *server) handleArtist() http.HandlerFunc {
 
 func (s *server) handleArtistStats() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-//		id := mux.Vars(r)["artist_id"]
+		//		id := mux.Vars(r)["artist_id"]
 
 		response := HttpResponse{
 			status:  http.StatusOK,
@@ -130,12 +135,12 @@ func (s *server) handleArtistStats() http.HandlerFunc {
 func (s *server) handleSongs() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-//		artistID := r.URL.Query()["artistid"]
-//		year := r.URL.Query()["year"]
-//		genre := r.URL.Query()["genre"]
-//		sort := r.URL.Query()["sort"]
-//		limit := r.URL.Query()["limit"]
-//		page := r.URL.Query()["page"]
+		//		artistID := r.URL.Query()["artistid"]
+		//		year := r.URL.Query()["year"]
+		//		genre := r.URL.Query()["genre"]
+		//		sort := r.URL.Query()["sort"]
+		//		limit := r.URL.Query()["limit"]
+		//		page := r.URL.Query()["page"]
 
 		response := HttpResponse{
 			status:  http.StatusOK,
@@ -149,7 +154,7 @@ func (s *server) handleSongs() http.HandlerFunc {
 func (s *server) handleSong() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-//		id := mux.Vars(r)["song_id"]
+		//		id := mux.Vars(r)["song_id"]
 
 		response := HttpResponse{
 			status:  http.StatusOK,
@@ -159,4 +164,3 @@ func (s *server) handleSong() http.HandlerFunc {
 		s.render(w, r, response)
 	}
 }
-
