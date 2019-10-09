@@ -7,10 +7,13 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
 type server struct {
 	router *mux.Router
+	db *gorm.DB
 }
 
 type Config struct {
@@ -20,9 +23,15 @@ type Config struct {
 func Run(conf *Config) error {
 	r := mux.NewRouter()
 
+	db, err := gorm.Open("sqlite3", "music.db")
+	
+	if err != nil {
+		return err
+	}
+
 	server := &server{
 		router: r,
-		// todo initialise database(s) and other global crap here
+		db: db,
 	}
 
 	// set up routes (routes.go)
