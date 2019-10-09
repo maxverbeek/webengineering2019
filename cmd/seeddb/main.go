@@ -83,12 +83,15 @@ func run() error {
 
 	artists := make(map[string]api.Artist)
 	songs := make(map[string]api.Song)
+	releases := make(map[string]api.Release)
 
 	for _, song := range records {
 		if _, ok := artists[song.ArtistId]; !ok {
 			artists[song.ArtistId] = song.Artist
 		}
-
+		if _, ok := releases[song.ReleaseId]; !ok {
+			releases[song.ReleaseId] = song.Release
+		}
 		songs[song.SongId] = song.Song
 	}
 
