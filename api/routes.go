@@ -2,7 +2,7 @@ package api
 
 import (
 	"encoding/json"
-	_ "github.com/gorilla/mux"
+	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"net/http"
@@ -108,11 +108,15 @@ func (s *server) handleArtists() http.HandlerFunc {
 
 func (s *server) handleArtist() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		//		id := mux.Vars(r)["artist_id"]
+		id := mux.Vars(r)["artist_id"]
+
+		var artist Artist
+
+		s.db.Where(&Artist{ArtistId: id}).First(&artist)
 
 		response := HttpResponse{
 			status:  http.StatusOK,
-			payload: struct{ Message string }{"Hello Artist."},
+			payload: artist,
 		}
 
 		s.render(w, r, response)
