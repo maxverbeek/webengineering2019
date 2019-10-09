@@ -35,8 +35,8 @@ type Release struct {
 
 type Song struct {
 	gorm.Model
-	AristId                     string
-	ReleaseId                   string
+	ArtistId                     string
+	ReleaseId                   int
 	SongArtistMbtags            float64 `csv:"song.artist_mbtags"`
 	SongArtistMbtagsCount       float64 `csv:"song.artist_mbtags_count"`
 	SongBarsConfidence          float64 `csv:"song.bars_confidence"`

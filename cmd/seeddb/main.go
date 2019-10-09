@@ -43,7 +43,6 @@ func run() error {
 
 	var (
 		csv io.ReadCloser
-		err error
 	)
 
 	if file != "" {
@@ -82,15 +81,18 @@ func run() error {
 
 	artists := make(map[string]api.Artist)
 	songs := make(map[string]api.Song)
-	releases := make(map[string]api.Release)
+	releases := make(map[int]api.Release)
 
 	for _, song := range records {
-		if _, ok := artists[song.ArtistId]; !ok {
-			artists[song.ArtistId] = song.Artist
+		if _, ok := artists[song.Artist.ArtistId]; !ok {
+			artists[song.Artist.ArtistId] = song.Artist
 		}
-		if _, ok := releases[song.ReleaseId]; !ok {
-			releases[song.ReleaseId] = song.Release
+		if _, ok := releases[song.Release.ReleaseId]; !ok {
+			releases[song.Release.ReleaseId] = song.Release
 		}
+
+		song.Song.ArtistId  = song.Artist.ArtistId
+		song.Song.ReleaseId = song.Release.ReleaseId
 		songs[song.SongId] = song.Song
 	}
 
