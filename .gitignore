@@ -16,6 +16,7 @@ webeng
 server
 seeddb
 fixdb
+bin/
 
 # music data
 music.csv

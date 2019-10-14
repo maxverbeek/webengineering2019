@@ -72,13 +72,12 @@ func run() error {
 	}
 	gocsv.SetCSVReader(func(in io.Reader) gocsv.CSVReader {
 		//return csv.NewReader(in)
-            return gocsv.LazyCSVReader(in) // Allows use of quotes in CSV
-        })
+		return gocsv.LazyCSVReader(in) // Allows use of quotes in CSV
+	})
 
 	if err = gocsv.Unmarshal(ssv, &songs); err != nil {
 		return err
 	}
-
 
 	for _, record := range records {
 		for _, song := range songs {

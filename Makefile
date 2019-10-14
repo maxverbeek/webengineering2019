@@ -1,9 +1,11 @@
 all: server seeddb
 
 server:
-	go build -o server ./cmd/server
+	go build -o ./bin/server ./cmd/server
 
 seeddb:
-	go build -o seeddb ./cmd/seeddb
+	go build -o ./bin/seeddb ./cmd/seeddb
 
-.PHONY: server seeddb
+doc:
+	swagger generate spec -w cmd/server -m -o doc/documentation.yaml
+.PHONY: server seeddb doc

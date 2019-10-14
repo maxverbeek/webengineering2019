@@ -101,7 +101,7 @@ func run() error {
 			tx.Create(&song.Release)
 		}
 
-		song.Song.ArtistId  = song.Artist.ArtistId
+		song.Song.ArtistId = song.Artist.ArtistId
 		song.Song.ReleaseId = song.Release.ReleaseId
 		songs[song.SongId] = song.Song
 

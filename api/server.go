@@ -13,7 +13,7 @@ import (
 
 type server struct {
 	router *mux.Router
-	db *gorm.DB
+	db     *gorm.DB
 }
 
 type Config struct {
@@ -24,7 +24,7 @@ func Run(conf *Config) error {
 	r := mux.NewRouter()
 
 	db, err := gorm.Open("sqlite3", "music.db")
-	
+
 	if err != nil {
 		return err
 	}
@@ -35,7 +35,7 @@ func Run(conf *Config) error {
 
 	server := &server{
 		router: r,
-		db: db,
+		db:     db,
 	}
 
 	// set up routes (routes.go)
