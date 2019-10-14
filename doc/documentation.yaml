@@ -1,0 +1,335 @@
+basePath: /api/v1
+definitions:
+  Artist:
+    description: The artist model
+    properties:
+      ArtistFamiliarity:
+        format: double
+        type: number
+      ArtistHotttnesss:
+        format: double
+        type: number
+      ArtistId:
+        type: string
+      ArtistLatitude:
+        format: double
+        type: number
+      ArtistLocation:
+        format: int64
+        type: integer
+      ArtistLongitude:
+        format: double
+        type: number
+      ArtistName:
+        type: string
+      ArtistSimilar:
+        format: double
+        type: number
+      ArtistTerms:
+        type: string
+      ArtistTermsFreq:
+        format: double
+        type: number
+      CreatedAt:
+        format: date-time
+        type: string
+      DeletedAt:
+        format: date-time
+        type: string
+      ID:
+        format: uint64
+        type: integer
+      UpdatedAt:
+        format: date-time
+        type: string
+    type: object
+    x-go-package: webeng/api
+  Model:
+    description: |-
+      Model base model definition, including fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`, which could be embedded in your models
+      type User struct {
+      gorm.Model
+      }
+    properties:
+      CreatedAt:
+        format: date-time
+        type: string
+      DeletedAt:
+        format: date-time
+        type: string
+      ID:
+        format: uint64
+        type: integer
+      UpdatedAt:
+        format: date-time
+        type: string
+    type: object
+    x-go-package: github.com/jinzhu/gorm
+  Song:
+    description: The Song model
+    properties:
+      ArtistId:
+        type: string
+      CreatedAt:
+        format: date-time
+        type: string
+      DeletedAt:
+        format: date-time
+        type: string
+      ID:
+        format: uint64
+        type: integer
+      ReleaseId:
+        format: int64
+        type: integer
+      SongArtistMbtags:
+        format: double
+        type: number
+      SongArtistMbtagsCount:
+        format: double
+        type: number
+      SongBarsConfidence:
+        format: double
+        type: number
+      SongBarsStart:
+        format: double
+        type: number
+      SongBeatsConfidence:
+        format: double
+        type: number
+      SongBeatsStart:
+        format: double
+        type: number
+      SongDuration:
+        format: double
+        type: number
+      SongEndFadeIn:
+        format: double
+        type: number
+      SongHotttnesss:
+        format: double
+        type: number
+      SongId:
+        type: string
+      SongKey:
+        format: double
+        type: number
+      SongKeyConfidence:
+        format: double
+        type: number
+      SongLoudness:
+        format: double
+        type: number
+      SongMode:
+        format: int64
+        type: integer
+      SongModeConfidence:
+        format: double
+        type: number
+      SongStartFadeOut:
+        format: double
+        type: number
+      SongTatumsConfidence:
+        format: double
+        type: number
+      SongTatumsStart:
+        format: double
+        type: number
+      SongTempo:
+        format: double
+        type: number
+      SongTimeSignature:
+        format: double
+        type: number
+      SongTimeSignatureConfidence:
+        format: double
+        type: number
+      SongTitle:
+        type: string
+      SongYear:
+        format: int64
+        type: integer
+      UpdatedAt:
+        format: date-time
+        type: string
+    type: object
+    x-go-package: webeng/api
+info:
+  description: This is an api for accessing an manipulating a music database.
+  title: Music API
+  version: 0.1.0
+paths:
+  /:
+    get:
+      operationId: index
+      responses:
+        "200":
+          description: successful operation
+  /artists:
+    get:
+      description: Gets a list of artists.
+      operationId: Artists
+      parameters:
+      - description: Filter by name of artist.
+        in: query
+        name: name
+        type: string
+      - description: Filter by artist genre.
+        in: query
+        name: genre
+        type: string
+      - description: sort by; {hotttnesss}.
+        in: query
+        name: sort
+        type: string
+      - description: The number of artists per page.
+        in: query
+        name: limit
+        type: integer
+      - description: Retrieves the nth page of `limit`.
+        in: query
+        name: page
+        type: integer
+      responses:
+        "200":
+          description: Yields list of artists.
+          examples:
+            application/json:
+            - can: auto
+              gen: this
+              stupid: shit
+              to: do
+              when: we
+            text/csv: |
+              to,do,when,we,can
+              auto,gen,this,stupid,shit
+              auto,gen,this,stupid,shit
+        "404":
+          description: Could not find the Artist by ID.
+  /artists/{artist_id}:
+    get:
+      description: Gets an artist by the given ID.
+      operationId: Artist
+      parameters:
+      - description: ID of the artist.
+        in: path
+        name: artist_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Yields artist by ID.
+          examples:
+            application/json:
+            - can: auto
+              gen: this
+              stupid: shit
+              to: do
+              when: we
+            text/csv: |
+              to,do,when,we,can
+              auto,gen,this,stupid,shit
+              auto,gen,this,stupid,shit
+        "404":
+          description: Could not find the Artist by ID.
+  /artists/{artist_id}/stats:
+    get:
+      description: Gets the statistics of an artist by the given ID.
+      operationId: ArtistStats
+      parameters:
+      - description: ID of the artist.
+        in: path
+        name: artist_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Yields artist's statistics by ID.
+          examples:
+            application/json:
+            - can: auto
+              gen: this
+              stupid: shit
+              to: do
+              when: we
+            text/csv: |
+              to,do,when,we,can
+              auto,gen,this,stupid,shit
+              auto,gen,this,stupid,shit
+        "404":
+          description: Could not find the artist by ID.
+  /songs:
+    get:
+      description: Gets a list of songs
+      operationId: Songs
+      parameters:
+      - description: Filter by artist ID
+        in: query
+        name: artist_id
+        type: string
+      - description: Filter by year released.
+        in: query
+        name: year
+        type: integer
+      - description: Filter by artist genre.
+        in: query
+        name: genre
+        type: string
+      - description: sort by; {hotttnesss}.
+        in: query
+        name: sort
+        type: string
+      - description: The number of songs per page.
+        in: query
+        name: limit
+        type: integer
+      - description: Retrieves the nth page of `limit`.
+        in: query
+        name: page
+        type: integer
+      responses:
+        "200":
+          description: Yields list of songs.
+          examples:
+            application/json:
+            - can: auto
+              gen: this
+              stupid: shit
+              to: do
+              when: we
+            text/csv: |
+              to,do,when,we,can
+              auto,gen,this,stupid,shit
+              auto,gen,this,stupid,shit
+        "404":
+          description: Could not find the Artist by ID.
+  /songs/{song_id}:
+    get:
+      description: Gets a song by the given ID.
+      operationId: Song
+      parameters:
+      - description: ID of the song.
+        in: path
+        name: song_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Yields song by ID.
+          examples:
+            application/json:
+            - can: auto
+              gen: this
+              stupid: shit
+              to: do
+              when: we
+            text/csv: |
+              to,do,when,we,can
+              auto,gen,this,stupid,shit
+              auto,gen,this,stupid,shit
+        "404":
+          description: Could not find the song by ID.
+produces:
+- application/json
+- text/csv
+swagger: "2.0"
