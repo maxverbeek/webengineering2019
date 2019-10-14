@@ -44,3 +44,99 @@ a nice overview of all the API endpoints which is convenient for debugging (and
 grading). Each route has an associated `HandlerFunc`, which are created by
 functions in the `server` struct. We do this so that every `HandlerFunc` has
 its own closure environment, and thereby void global variables.
+
+
+## API doc
+
+#### `GET /api/songs` -- returns a list of all songs.
+
+**Query parameters:**
+
+You are able to filter the list of songs according to the following parameters:
+
+- artist_id
+- year
+- genre
+
+In addition to these filters, you are able to paginate the response using the
+following parameters:
+
+- limit
+- page
+
+You are also able to sort the response using the *sort* query parameter. This
+can be used to sort in *hotttnesss*, which in combination with *limit* can yield
+a top 50 list.
+
+##### Example query:
+
+`GET /api/songs?year=2010&sort=hotttnesss&limit=3`
+
+--
+
+Response code: 200 OK
+
+```json
+{
+    "content": [
+        {
+            "song": { song1 },
+            "links": []
+        },
+        {
+            "id": "SO12456",
+            "name": "Never gonna give you up",
+            "links": [ { "self": "/api/songs/SO12456" } ]
+        },
+        { song3 },
+    ],
+
+    "links": {
+        "self": "/api/songs?year=2010&sort=hotttnesss&limit=3",
+        "next_page": "/api/songs?year=2010&sort=hotttnesss&limit=3&page=2",
+        "last_page": "/api/songs?year=2010&sort=hotttnesss&limit=3&page=6",
+    }
+}
+```
+
+
+#### `GET /api/songs/{id}`
+
+**Query parameters**: none
+
+Returns all information about a particular song.
+
+Example query:
+
+`GET /api/songs/SO12456`
+
+--
+
+Response code: 200 OK
+
+```json
+{
+    "song_id": "SO12456",
+    "title": "Never gonna give you up",
+    "artist_id": "AR1CKASTL3Y",
+    "release_id": "213918492",
+    "length": "212",
+    "artist": {
+        
+    }
+    ...
+    "links" [
+        "self": "/api/songs/SO12456",
+        "artist": "/api/artists/AR1CKASTL3Y",
+    ]
+}
+```
+
+### Questions to Sofie
+
+1. Which way are we supposed to represent pieces of data in the paginated
+   responses? (song1, 2, or 3)
+
+2. How are we supposed to include links in the single data response e.g. `/api/songs/SO12456`.
+   Options are `{ "id": "some id", "name": "some name", "links": [ .. ] }` or
+   `{ "data": { "id": "some_id", "name": "some name" }, "links": [ ..  ] }`.
