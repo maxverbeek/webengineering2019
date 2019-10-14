@@ -58,7 +58,7 @@ type Song struct {
 	SongTempo                   float64 `csv:"song.tempo"`
 	SongTimeSignature           float64 `csv:"song.time_signature"`
 	SongTimeSignatureConfidence float64 `csv:"song.time_signature_confidence"`
-	SongTitle                   int     `csv:"song.title"`
+	SongTitle                   string  `csv:"song.title"`
 	SongYear                    int     `csv:"song.year"`
 }
 
@@ -139,7 +139,7 @@ func (s *server) handleArtistStats() http.HandlerFunc {
 func (s *server) handleSongs() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		//		artistID := r.URL.Query()["artistid"]
+		// artistID := r.URL.Query()["artistid"]
 		//		year := r.URL.Query()["year"]
 		//		genre := r.URL.Query()["genre"]
 		//		sort := r.URL.Query()["sort"]
@@ -157,12 +157,15 @@ func (s *server) handleSongs() http.HandlerFunc {
 
 func (s *server) handleSong() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		id := mux.Vars(r)["song_id"]
 
-		//		id := mux.Vars(r)["song_id"]
+		var song Song
+
+		s.db.Where(&Song{SongId: id}).First(&song)
 
 		response := HttpResponse{
 			status:  http.StatusOK,
-			payload: struct{ Message string }{"Hello Song."},
+			payload: song,
 		}
 
 		s.render(w, r, response)
