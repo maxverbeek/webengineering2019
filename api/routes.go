@@ -18,6 +18,11 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"net/http"
+	"mime"
+	"log"
+	"strings"
+	"github.com/gocarina/gocsv"
+	"fmt"
 )
 
 type HttpResponse struct {
@@ -78,11 +83,49 @@ type Song struct {
 	SongYear                    int     `csv:"song.year"`
 }
 
+
+// Determine whether the request `content-type` includes a
+// server-acceptable mime-type
+//
+// Failure should yield an HTTP 415 (`http.StatusUnsupportedMediaType`)
+func HasContentType(r *http.Request, mimetype string) bool {
+	contentType := r.Header.Get("Content-type")
+	if contentType == "" {
+		return mimetype == "application/json"
+	}
+
+	for _, v := range strings.Split(contentType, ",") {
+		t, _, err := mime.ParseMediaType(v)
+		if err != nil {
+			break
+		}
+		if t == mimetype {
+			return true
+		}
+	}
+	return false
+}
+
 func (s *server) render(w http.ResponseWriter, r *http.Request, response HttpResponse) {
 	// TODO json only for now
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.WriteHeader(response.status)
-	json.NewEncoder(w).Encode(response.payload)
+	if HasContentType(r, "application/json") {
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(response.status)
+		json.NewEncoder(w).Encode(response.payload)
+
+	} else if r.Header.Get("Content-Type") == "text/csv" {
+		csv, err := gocsv.MarshalString(response.payload)
+		if(err != nil){
+			log.Print(err)
+		}
+		w.Header().Set("Content-Type", "text/csv")
+		w.WriteHeader(response.status)
+		w.Write([]byte(fmt.Sprintf("%v", csv)))
+
+	}else{
+		w.WriteHeader(http.StatusUnsupportedMediaType)
+		log.Print(r.Header.Get("Content-Type"))
+	}
 }
 
 func (s *server) routes() {
@@ -104,12 +147,13 @@ func (s *server) handleIndex() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		response := HttpResponse{
 			status:  http.StatusOK,
-			payload: struct{ Message string }{"Hello index."},
+			payload: []struct{Message string}{struct{Message string}{"Hello Index"}},
 		}
 
 		s.render(w, r, response)
 	}
 }
+
 
 // swagger:operation GET /artists Artists
 // ---
@@ -166,7 +210,7 @@ func (s *server) handleArtists() http.HandlerFunc {
 
 		response := HttpResponse{
 			status:  http.StatusOK,
-			payload: struct{ Message string }{"Hello Artists."},
+			payload: nil,
 		}
 
 		s.render(w, r, response)
@@ -199,7 +243,7 @@ func (s *server) handleArtists() http.HandlerFunc {
 //   404:
 //     description: Could not find the Artist by ID.
 func (s *server) handleArtist() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *htt.Reques) {
+	return func(w http.ResponseWriter, r *http.Request) {
 		id := mux.Vars(r)["artist_id"]
 
 		var artist Artist
@@ -208,7 +252,7 @@ func (s *server) handleArtist() http.HandlerFunc {
 
 		response := HttpResponse{
 			status:  http.StatusOK,
-			payload: artist,
+			payload: [...]Artist{artist},
 		}
 
 		s.render(w, r, response)
@@ -246,7 +290,7 @@ func (s *server) handleArtistStats() http.HandlerFunc {
 
 		response := HttpResponse{
 			status:  http.StatusOK,
-			payload: struct{ Message string }{"Hello Stats."},
+			payload: nil,
 		}
 
 		s.render(w, r, response)
@@ -315,7 +359,7 @@ func (s *server) handleSongs() http.HandlerFunc {
 
 		response := HttpResponse{
 			status:  http.StatusOK,
-			payload: struct{ Message string }{"Hello Songs."},
+			payload: nil,
 		}
 
 		s.render(w, r, response)
@@ -357,7 +401,7 @@ func (s *server) handleSong() http.HandlerFunc {
 
 		response := HttpResponse{
 			status:  http.StatusOK,
-			payload: song,
+			payload: [...]Song{song},
 		}
 
 		s.render(w, r, response)
