@@ -14,15 +14,15 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
+	"github.com/gocarina/gocsv"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
-	"net/http"
-	"mime"
 	"log"
+	"mime"
+	"net/http"
 	"strings"
-	"github.com/gocarina/gocsv"
-	"fmt"
 )
 
 type HttpResponse struct {
@@ -83,7 +83,6 @@ type Song struct {
 	SongYear                    int     `csv:"song.year"`
 }
 
-
 // Determine whether the request `content-type` includes a
 // server-acceptable mime-type
 //
@@ -115,14 +114,14 @@ func (s *server) render(w http.ResponseWriter, r *http.Request, response HttpRes
 
 	} else if r.Header.Get("Content-Type") == "text/csv" {
 		csv, err := gocsv.MarshalString(response.payload)
-		if(err != nil){
+		if err != nil {
 			log.Print(err)
 		}
 		w.Header().Set("Content-Type", "text/csv")
 		w.WriteHeader(response.status)
 		w.Write([]byte(fmt.Sprintf("%v", csv)))
 
-	}else{
+	} else {
 		w.WriteHeader(http.StatusUnsupportedMediaType)
 		log.Print(r.Header.Get("Content-Type"))
 	}
@@ -147,13 +146,12 @@ func (s *server) handleIndex() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		response := HttpResponse{
 			status:  http.StatusOK,
-			payload: []struct{Message string}{struct{Message string}{"Hello Index"}},
+			payload: []struct{ Message string }{struct{ Message string }{"Hello Index"}},
 		}
 
 		s.render(w, r, response)
 	}
 }
-
 
 // swagger:operation GET /artists Artists
 // ---
