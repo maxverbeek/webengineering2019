@@ -1,1 +1,1 @@
-redoc-cli serve --watch doc/documentation.yaml
+redoc-cli serve -p 8081 --watch doc/documentation.yaml

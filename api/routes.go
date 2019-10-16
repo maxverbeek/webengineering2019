@@ -16,7 +16,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gocarina/gocsv"
-	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"log"
@@ -105,27 +104,33 @@ func HasContentType(r *http.Request, mimetype string) bool {
 	return false
 }
 
-func (s *server) render(w http.ResponseWriter, r *http.Request, response HttpResponse) {
-	// TODO json only for now
+func (response *HttpResponse) Render(w http.ResponseWriter, r *http.Request) {
 	if HasContentType(r, "application/json") {
-		w.Header().Set("Content-Type", "application/json; charset=utf-8")
-		w.WriteHeader(response.status)
-		json.NewEncoder(w).Encode(response.payload)
-
+		response.RenderJSON(w, r)
 	} else if r.Header.Get("Content-Type") == "text/csv" {
-		csv, err := gocsv.MarshalString(response.payload)
-		if err != nil {
-			log.Print(err)
-		}
-		w.Header().Set("Content-Type", "text/csv")
-		w.WriteHeader(response.status)
-		w.Write([]byte(fmt.Sprintf("%v", csv)))
-
+		response.RenderCSV(w, r)
 	} else {
 		w.WriteHeader(http.StatusUnsupportedMediaType)
 		log.Print(r.Header.Get("Content-Type"))
 	}
 }
+
+func (response *HttpResponse) RenderJSON(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(response.status)
+	json.NewEncoder(w).Encode(response.payload)
+}
+
+func (response *HttpResponse) RenderCSV(w http.ResponseWriter, r *http.Request) {
+	csv, err := gocsv.MarshalString(response.payload)
+	if err != nil {
+		log.Print(err)
+	}
+	w.Header().Set("Content-Type", "text/csv")
+	w.WriteHeader(response.status)
+	w.Write([]byte(fmt.Sprintf("%v", csv)))
+}
+
 
 func (s *server) routes() {
 	s.router.HandleFunc("/", s.handleIndex())
@@ -149,259 +154,6 @@ func (s *server) handleIndex() http.HandlerFunc {
 			payload: []struct{ Message string }{struct{ Message string }{"Hello Index"}},
 		}
 
-		s.render(w, r, response)
-	}
-}
-
-// swagger:operation GET /artists Artists
-// ---
-// description: Gets a list of artists.
-// parameters:
-//   - in: query
-//     name: name
-//     description: Filter by name of artist.
-//     required: false
-//     type: string
-//   - in: query
-//     name: genre
-//     description: Filter by artist genre.
-//     required: false
-//     type: string
-//   - in: query
-//     name: sort
-//     description: sort by; {hotttnesss}.
-//     required: false
-//     type: string
-//   - in: query
-//     name: limit
-//     description: The number of artists per page.
-//     required: false
-//     type: integer
-//   - in: query
-//     name: page
-//     description: Retrieves the nth page of `limit`.
-//     required: false
-//     type: integer
-// responses:
-//   200:
-//     description: Yields list of artists.
-//     examples:
-//       application/json:
-//         - to: do
-//           when: we
-//           can: auto
-//           gen: this
-//           stupid: shit
-//       text/csv: |
-//         to,do,when,we,can
-//         auto,gen,this,stupid,shit
-//         auto,gen,this,stupid,shit
-//   404:
-//     description: Could not find the Artist by ID.
-func (s *server) handleArtists() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		//		name := r.URL.Query()["name"]
-		//		genre := r.URL.Query()["genre"]
-		//		sort := r.URL.Query()["sort"]
-		//		limit := r.URL.Query()["limit"]
-		//		page := r.URL.Query()["page"]
-
-		response := HttpResponse{
-			status:  http.StatusOK,
-			payload: nil,
-		}
-
-		s.render(w, r, response)
-	}
-}
-
-// swagger:operation GET /artists/{artist_id} Artist
-// ---
-// description: Gets an artist by the given ID.
-// parameters:
-//   - in: path
-//     name: artist_id
-//     description: ID of the artist.
-//     required: true
-//     type: string
-// responses:
-//   200:
-//     description: Yields artist by ID.
-//     examples:
-//       application/json:
-//         - to: do
-//           when: we
-//           can: auto
-//           gen: this
-//           stupid: shit
-//       text/csv: |
-//         to,do,when,we,can
-//         auto,gen,this,stupid,shit
-//         auto,gen,this,stupid,shit
-//   404:
-//     description: Could not find the Artist by ID.
-func (s *server) handleArtist() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		id := mux.Vars(r)["artist_id"]
-
-		var artist Artist
-
-		s.db.Where(&Artist{ArtistId: id}).First(&artist)
-
-		response := HttpResponse{
-			status:  http.StatusOK,
-			payload: [...]Artist{artist},
-		}
-
-		s.render(w, r, response)
-	}
-}
-
-// swagger:operation GET /artists/{artist_id}/stats ArtistStats
-// ---
-// description: Gets the statistics of an artist by the given ID.
-// parameters:
-//   - in: path
-//     name: artist_id
-//     description: ID of the artist.
-//     required: true
-//     type: string
-// responses:
-//   200:
-//     description: Yields artist's statistics by ID.
-//     examples:
-//       application/json:
-//         - to: do
-//           when: we
-//           can: auto
-//           gen: this
-//           stupid: shit
-//       text/csv: |
-//         to,do,when,we,can
-//         auto,gen,this,stupid,shit
-//         auto,gen,this,stupid,shit
-//   404:
-//     description: Could not find the artist by ID.
-func (s *server) handleArtistStats() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		//		id := mux.Vars(r)["artist_id"]
-
-		response := HttpResponse{
-			status:  http.StatusOK,
-			payload: nil,
-		}
-
-		s.render(w, r, response)
-	}
-}
-
-// swagger:operation GET /songs Songs
-// ---
-// description: Gets a list of songs
-// parameters:
-//   - in: query
-//     name: artist_id
-//     description: Filter by artist ID
-//     required: false
-//     type: string
-//   - in: query
-//     name: year
-//     description: Filter by year released.
-//     required: false
-//     type: integer
-//   - in: query
-//     name: genre
-//     description: Filter by artist genre.
-//     required: false
-//     type: string
-//   - in: query
-//     name: sort
-//     description: sort by; {hotttnesss}.
-//     required: false
-//     type: string
-//   - in: query
-//     name: limit
-//     description: The number of songs per page.
-//     required: false
-//     type: integer
-//   - in: query
-//     name: page
-//     description: Retrieves the nth page of `limit`.
-//     required: false
-//     type: integer
-// responses:
-//   200:
-//     description: Yields list of songs.
-//     examples:
-//       application/json:
-//         - to: do
-//           when: we
-//           can: auto
-//           gen: this
-//           stupid: shit
-//       text/csv: |
-//         to,do,when,we,can
-//         auto,gen,this,stupid,shit
-//         auto,gen,this,stupid,shit
-//   404:
-//     description: Could not find the Artist by ID.
-func (s *server) handleSongs() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-
-		// artistID := r.URL.Query()["artistid"]
-		//		year := r.URL.Query()["year"]
-		//		genre := r.URL.Query()["genre"]
-		//		sort := r.URL.Query()["sort"]
-		//		limit := r.URL.Query()["limit"]
-		//		page := r.URL.Query()["page"]
-
-		response := HttpResponse{
-			status:  http.StatusOK,
-			payload: nil,
-		}
-
-		s.render(w, r, response)
-	}
-}
-
-// swagger:operation GET /songs/{song_id} Song
-// ---
-// description: Gets a song by the given ID.
-// parameters:
-//   - in: path
-//     name: song_id
-//     description: ID of the song.
-//     required: true
-//     type: string
-// responses:
-//   200:
-//     description: Yields song by ID.
-//     examples:
-//       application/json:
-//         - to: do
-//           when: we
-//           can: auto
-//           gen: this
-//           stupid: shit
-//       text/csv: |
-//         to,do,when,we,can
-//         auto,gen,this,stupid,shit
-//         auto,gen,this,stupid,shit
-//   404:
-//     description: Could not find the song by ID.
-func (s *server) handleSong() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		id := mux.Vars(r)["song_id"]
-
-		var song Song
-
-		s.db.Where(&Song{SongId: id}).First(&song)
-
-		response := HttpResponse{
-			status:  http.StatusOK,
-			payload: [...]Song{song},
-		}
-
-		s.render(w, r, response)
+		response.Render(w, r)
 	}
 }
