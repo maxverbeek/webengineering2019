@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"time"
 
+	"webeng/api/repository"
+
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
@@ -14,6 +16,7 @@ import (
 type server struct {
 	router *mux.Router
 	db     *gorm.DB
+	newdb  *repository.SqliteStore
 }
 
 type Config struct {
@@ -36,6 +39,7 @@ func Run(conf *Config) error {
 	server := &server{
 		router: r,
 		db:     db,
+		newdb:  &repository.SqliteStore{db},
 	}
 
 	// set up routes (routes.go)

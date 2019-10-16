@@ -9,15 +9,36 @@ import (
 )
 
 type SqliteStore struct {
-	db *gorm.DB
+	Db *gorm.DB
 }
 
-type dbSong struct {
-	// perhaps it may be easier to use raw SQL.
+// has to be named song because the SQlite database is created like this
+type song struct {
 	gorm.Model
 	model.Song
 }
 
-func (*SqliteStore) FindSong(query *Query) Song {
-	return nil
+func (s *SqliteStore) FindSong(query *Query) model.Song {
+	sng := &song{}
+	sng.SongId = query.Id
+
+	var res song
+	s.Db.Where(sng).Find(&res)
+
+	return res.Song
+}
+
+type dbArtist struct {
+	gorm.Model
+	model.Artist
+}
+
+func (s *SqliteStore) FindArtist(query *Query) model.Artist {
+	artist := &dbArtist{}
+	artist.ArtistId = query.Id
+
+	var res dbArtist
+	s.Db.Where(artist).Find(&res)
+
+	return res.Artist
 }

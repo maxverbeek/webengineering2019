@@ -2,6 +2,8 @@ package api
 
 import (
 	"net/http"
+	"webeng/api/repository"
+	"webeng/api/model"
 	"github.com/gorilla/mux"
 )
 
@@ -34,13 +36,11 @@ func (s *server) handleSong() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := mux.Vars(r)["song_id"]
 
-		var song Song
-
-		s.db.Where(&Song{SongId: id}).First(&song)
+		song := s.newdb.FindSong(&repository.Query{Id: id})
 
 		response := HttpResponse{
 			status:  http.StatusOK,
-			payload: [...]Song{song},
+			payload: [...]model.SongShort{song.SongShort},
 		}
 
 		response.Render(w, r)
