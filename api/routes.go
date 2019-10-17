@@ -16,7 +16,6 @@ import (
 	"net/http"
 
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
 // The artist model

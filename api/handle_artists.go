@@ -60,7 +60,7 @@ func (s *server) handleArtists() http.HandlerFunc {
 
 		artists := s.newdb.FindArtists(&repository.Query{
 			Name:  r.URL.Query().Get("name"),
-			Genre: r.URL.Query().Get("genre")
+			Genre: r.URL.Query().Get("genre"),
 		})
 
 		response := HttpResponse{
