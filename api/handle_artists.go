@@ -20,7 +20,7 @@ import (
 //     type: string
 //   - in: query
 //     name: sort
-//     description: sort by; {hotttnesss}.
+//     description: sort by `hotttnesss`.
 //     required: false
 //     type: string
 //   - in: query

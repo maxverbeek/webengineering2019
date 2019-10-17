@@ -62,7 +62,7 @@ func (s *server) handleSongs() http.HandlerFunc {
 
 		songId := r.URL.Query().Get("songid")
 		year, _ := strconv.Atoi(r.URL.Query().Get("year"))
-		//		genre := r.URL.Query()["genre"]
+		genre := r.URL.Query().Get("genre")
 		//		sort := r.URL.Query()["sort"]
 		//		limit := r.URL.Query()["limit"]
 		//		page := r.URL.Query()["page"]
@@ -70,6 +70,7 @@ func (s *server) handleSongs() http.HandlerFunc {
 		songs := s.newdb.FindSongs(&repository.Query{
 			Id: songId,
 			Year: year,
+			Genre: genre,
 		})
 
 		response := HttpResponse{

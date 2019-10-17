@@ -51,7 +51,26 @@ func (s *SqliteStore) FindSongs(query *Query) []model.Song {
 	qsong.SongId = query.Id
 	qsong.SongYear = query.Year
 
-	s.Db.Where(qsong).Find(&songs)
+	dbquery := s.Db.Where(qsong)
+
+	if query.Genre != "" {
+		dbquery = dbquery.Joins("JOIN artists ON artists.artist_id = songs.artist_id")
+		dbquery = dbquery.Where("artists.artist_terms = ?", query.Genre)
+	}
+
+	dbquery.Find(&songs)
 
 	return songs
+}
+
+func (s *SqliteStore) FindArtists(query *Query) []model.Artist {
+	artists := make([]model.Artist, 5)
+
+	qartist := &artist{}
+	qartist.ArtistId = query.Id
+	qartist.ArtistTerms = query.Genre
+
+	s.Db.Where(qartist).Find(&artists)
+
+	return artists
 }

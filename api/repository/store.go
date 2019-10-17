@@ -7,6 +7,7 @@ import "webeng/api/model"
 type Query struct {
 	Id string
 	Year int
+	Genre string
 }
 
 type Store interface {
