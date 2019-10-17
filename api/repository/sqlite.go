@@ -28,21 +28,6 @@ func (s *SqliteStore) FindSong(query *Query) model.Song {
 	return res.Song
 }
 
-type artist struct {
-	gorm.Model
-	model.Artist
-}
-
-func (s *SqliteStore) FindArtist(query *Query) model.Artist {
-	a := &artist{}
-	a.ArtistId = query.Id
-
-	var res artist
-	s.Db.Where(a).Find(&res)
-
-	return res.Artist
-}
-
 func (s *SqliteStore) FindSongs(query *Query) []model.Song {
 	songs := make([]model.Song, 5)
 
@@ -61,6 +46,21 @@ func (s *SqliteStore) FindSongs(query *Query) []model.Song {
 	dbquery.Find(&songs)
 
 	return songs
+}
+
+type artist struct {
+	gorm.Model
+	model.Artist
+}
+
+func (s *SqliteStore) FindArtist(query *Query) model.Artist {
+	a := &artist{}
+	a.ArtistId = query.Id
+
+	var res artist
+	s.Db.Where(a).Find(&res)
+
+	return res.Artist
 }
 
 func (s *SqliteStore) FindArtists(query *Query) []model.Artist {
