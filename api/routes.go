@@ -123,7 +123,7 @@ func (response *HttpResponse) RenderJSON(w http.ResponseWriter, r *http.Request)
 }
 
 func (response *HttpResponse) RenderCSV(w http.ResponseWriter, r *http.Request) {
-	
+
 	w.Header().Set("Content-Type", "text/csv")
 	w.WriteHeader(response.status)
 
@@ -131,9 +131,13 @@ func (response *HttpResponse) RenderCSV(w http.ResponseWriter, r *http.Request) 
 
 	switch response.payload.(type) {
 
-	// if the payload is already a slice, CSV it
-	case []interface{}:
-		err = gocsv.Marshal(response.payload.([]interface{}), w)
+	// type assertions for multi object repsonses
+	case []model.Song:
+		err = gocsv.Marshal(response.payload.([]model.Song), w)
+		break
+
+	case []model.Artist:
+		err = gocsv.Marshal(response.payload.([]model.Artist), w)
 		break
 
 	// some type assertions for single types
@@ -145,6 +149,7 @@ func (response *HttpResponse) RenderCSV(w http.ResponseWriter, r *http.Request) 
 		err = gocsv.Marshal([]model.Artist{response.payload.(model.Artist)}, w)
 		break
 
+	// type assertions for compatability with old models
 	case Song:
 		err = gocsv.Marshal([]Song{response.payload.(Song)}, w)
 		break
@@ -153,14 +158,9 @@ func (response *HttpResponse) RenderCSV(w http.ResponseWriter, r *http.Request) 
 		err = gocsv.Marshal([]Artist{response.payload.(Artist)}, w)
 		break
 
-	// in case the payload is not a slice, we return a single object
-	// so we convert it to a slice. hacky hacky ;D
-	// doesn't work tho :(
+	// we fucked
 	default:
-		log.Println("using CSV hacky hack")
-		var test []interface{} = make([]interface{}, 1)
-		test[0] = response.payload
-		err = gocsv.Marshal(test, w)
+		log.Println("idk what to reply with")
 		break
 	}
 

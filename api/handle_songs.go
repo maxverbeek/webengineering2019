@@ -2,6 +2,9 @@ package api
 
 import (
 	"net/http"
+
+	"strconv"
+	"webeng/api/repository"
 )
 
 // swagger:operation GET /songs Songs
@@ -57,16 +60,21 @@ import (
 func (s *server) handleSongs() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		// artistID := r.URL.Query()["artistid"]
-		//		year := r.URL.Query()["year"]
+		songId := r.URL.Query().Get("songid")
+		year, _ := strconv.Atoi(r.URL.Query().Get("year"))
 		//		genre := r.URL.Query()["genre"]
 		//		sort := r.URL.Query()["sort"]
 		//		limit := r.URL.Query()["limit"]
 		//		page := r.URL.Query()["page"]
 
+		songs := s.newdb.FindSongs(&repository.Query{
+			Id: songId,
+			Year: year,
+		})
+
 		response := HttpResponse{
 			status:  http.StatusOK,
-			payload: nil,
+			payload: songs,
 		}
 
 		response.Render(w, r)
