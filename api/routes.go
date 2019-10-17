@@ -13,16 +13,10 @@
 package api
 
 import (
-	"encoding/json"
-	"github.com/gocarina/gocsv"
+	"net/http"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
-	"log"
-	"mime"
-	"net/http"
-	"strings"
-
-	"webeng/api/model"
 )
 
 // The artist model

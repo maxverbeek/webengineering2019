@@ -18,7 +18,6 @@ import (
 
 type server struct {
 	router *mux.Router
-	db     *gorm.DB
 	newdb  *repository.SqliteStore
 }
 
@@ -43,7 +42,6 @@ func Run(conf *Config) error {
 
 	server := &server{
 		router: r,
-		db:     db,
 		newdb:  &repository.SqliteStore{db},
 	}
 
