@@ -3,7 +3,6 @@ package api
 import (
 	"net/http"
 	"webeng/api/repository"
-	"webeng/api/model"
 	"github.com/gorilla/mux"
 )
 
@@ -40,7 +39,7 @@ func (s *server) handleSong() http.HandlerFunc {
 
 		response := HttpResponse{
 			status:  http.StatusOK,
-			payload: [...]model.SongShort{song.SongShort},
+			payload: song,
 		}
 
 		response.Render(w, r)

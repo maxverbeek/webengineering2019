@@ -28,17 +28,17 @@ func (s *SqliteStore) FindSong(query *Query) model.Song {
 	return res.Song
 }
 
-type dbArtist struct {
+type artist struct {
 	gorm.Model
 	model.Artist
 }
 
 func (s *SqliteStore) FindArtist(query *Query) model.Artist {
-	artist := &dbArtist{}
-	artist.ArtistId = query.Id
+	a := &artist{}
+	a.ArtistId = query.Id
 
-	var res dbArtist
-	s.Db.Where(artist).Find(&res)
+	var res artist
+	s.Db.Where(a).Find(&res)
 
 	return res.Artist
 }

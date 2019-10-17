@@ -3,6 +3,8 @@ package api
 import (
 	"net/http"
 	"github.com/gorilla/mux"
+
+	"webeng/api/repository"
 )
 
 // swagger:operation GET /artists/{artist_id} Artist
@@ -34,13 +36,11 @@ func (s *server) handleArtist() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := mux.Vars(r)["artist_id"]
 
-		var artist Artist
-
-		s.db.Where(&Artist{ArtistId: id}).First(&artist)
+		artist := s.newdb.FindArtist(&repository.Query{Id: id})
 
 		response := HttpResponse{
 			status:  http.StatusOK,
-			payload: [...]Artist{artist},
+			payload: artist,
 		}
 
 		response.Render(w, r)

@@ -14,7 +14,6 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gocarina/gocsv"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
@@ -22,6 +21,8 @@ import (
 	"mime"
 	"net/http"
 	"strings"
+
+	"webeng/api/model"
 )
 
 type HttpResponse struct {
@@ -122,13 +123,50 @@ func (response *HttpResponse) RenderJSON(w http.ResponseWriter, r *http.Request)
 }
 
 func (response *HttpResponse) RenderCSV(w http.ResponseWriter, r *http.Request) {
-	csv, err := gocsv.MarshalString(response.payload)
+	
+	w.Header().Set("Content-Type", "text/csv")
+	w.WriteHeader(response.status)
+
+	var err error
+
+	switch response.payload.(type) {
+
+	// if the payload is already a slice, CSV it
+	case []interface{}:
+		err = gocsv.Marshal(response.payload.([]interface{}), w)
+		break
+
+	// some type assertions for single types
+	case model.Song:
+		err = gocsv.Marshal([]model.Song{response.payload.(model.Song)}, w)
+		break
+		
+	case model.Artist:
+		err = gocsv.Marshal([]model.Artist{response.payload.(model.Artist)}, w)
+		break
+
+	case Song:
+		err = gocsv.Marshal([]Song{response.payload.(Song)}, w)
+		break
+
+	case Artist:
+		err = gocsv.Marshal([]Artist{response.payload.(Artist)}, w)
+		break
+
+	// in case the payload is not a slice, we return a single object
+	// so we convert it to a slice. hacky hacky ;D
+	// doesn't work tho :(
+	default:
+		log.Println("using CSV hacky hack")
+		var test []interface{} = make([]interface{}, 1)
+		test[0] = response.payload
+		err = gocsv.Marshal(test, w)
+		break
+	}
+
 	if err != nil {
 		log.Print(err)
 	}
-	w.Header().Set("Content-Type", "text/csv")
-	w.WriteHeader(response.status)
-	w.Write([]byte(fmt.Sprintf("%v", csv)))
 }
 
 
