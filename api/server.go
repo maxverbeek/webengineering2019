@@ -1,9 +1,12 @@
 package api
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
 	"time"
 
 	"webeng/api/repository"
@@ -32,6 +35,8 @@ func Run(conf *Config) error {
 		return err
 	}
 
+	defer db.Close()
+
 	db.AutoMigrate(&Song{})
 	db.AutoMigrate(&Artist{})
 	db.AutoMigrate(&Release{})
@@ -56,5 +61,21 @@ func Run(conf *Config) error {
 
 	log.Printf("Listening on 0.0.0.0:%d", conf.Port)
 
-	return srv.ListenAndServe()
+	go srv.ListenAndServe()
+
+	c := make(chan os.Signal, 1)
+
+	// block until process receives SIGINT
+	signal.Notify(c, os.Interrupt)
+	<-c
+	signal.Stop(c)
+
+	// received signal -> shutdown server
+	log.Println("Shutting down...")
+	ctx, cancel := context.WithTimeout(context.Background(), 15 * time.Second)
+	defer cancel()
+
+	srv.Shutdown(ctx)
+
+	return nil
 }
