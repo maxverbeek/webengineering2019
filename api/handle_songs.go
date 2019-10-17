@@ -68,8 +68,8 @@ func (s *server) handleSongs() http.HandlerFunc {
 		//		page := r.URL.Query()["page"]
 
 		songs := s.newdb.FindSongs(&repository.Query{
-			Id: songId,
-			Year: year,
+			Id:    songId,
+			Year:  year,
 			Genre: genre,
 		})
 

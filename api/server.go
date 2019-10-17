@@ -72,7 +72,7 @@ func Run(conf *Config) error {
 
 	// received signal -> shutdown server
 	log.Println("Shutting down...")
-	ctx, cancel := context.WithTimeout(context.Background(), 15 * time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 
 	srv.Shutdown(ctx)

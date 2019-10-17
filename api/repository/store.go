@@ -5,8 +5,8 @@ package repository
 import "webeng/api/model"
 
 type Query struct {
-	Id string
-	Year int
+	Id    string
+	Year  int
 	Genre string
 }
 

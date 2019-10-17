@@ -1,12 +1,12 @@
 package model
 
 type SongShort struct {
-	ArtistId                    string
-	ReleaseId                   int
-	SongId                      string  `csv:"song.id" json:"id"`
-	SongTitle                   string  `csv:"song.title" json:"title"`
-	SongYear                    int     `csv:"song.year" json:"year"`
-	SongDuration                float64 `csv:"song.duration" json:"duration"`
+	ArtistId     string
+	ReleaseId    int
+	SongId       string  `csv:"song.id" json:"id"`
+	SongTitle    string  `csv:"song.title" json:"title"`
+	SongYear     int     `csv:"song.year" json:"year"`
+	SongDuration float64 `csv:"song.duration" json:"duration"`
 }
 
 // The Song model

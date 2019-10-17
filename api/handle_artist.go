@@ -1,8 +1,8 @@
 package api
 
 import (
-	"net/http"
 	"github.com/gorilla/mux"
+	"net/http"
 
 	"webeng/api/repository"
 )
@@ -84,4 +84,3 @@ func (s *server) handleArtistStats() http.HandlerFunc {
 		response.Render(w, r)
 	}
 }
-
