@@ -2,6 +2,8 @@
 package repository
 
 import (
+	"fmt"
+
 	"webeng/api/model"
 
 	"github.com/jinzhu/gorm"
@@ -36,14 +38,18 @@ func (s *SqliteStore) FindSongs(query *Query) []model.Song {
 	qsong.SongId = query.Id
 	qsong.SongYear = query.Year
 
-	dbquery := s.Db.Where(qsong)
+	q := s.Db.Where(qsong)
 
 	if query.Genre != "" {
-		dbquery = dbquery.Joins("JOIN artists ON artists.artist_id = songs.artist_id")
-		dbquery = dbquery.Where("artists.artist_terms = ?", query.Genre)
+		q = q.Joins("JOIN artists ON artists.artist_id = songs.artist_id")
+		q = q.Where("artists.artist_terms = ?", query.Genre)
 	}
 
-	dbquery.Find(&songs)
+	if query.Name != "" {
+		q = q.Where("songs.song_title LIKE ?", fmt.Sprintf("%%%s%%", query.Name))
+	}
+
+	q.Find(&songs)
 
 	return songs
 }
@@ -70,7 +76,13 @@ func (s *SqliteStore) FindArtists(query *Query) []model.Artist {
 	qartist.ArtistId = query.Id
 	qartist.ArtistTerms = query.Genre
 
-	s.Db.Where(qartist).Find(&artists)
+	q := s.Db.Where(qartist)
+
+	if query.Name != "" {
+		q = q.Where("artists.artist_name LIKE ?", fmt.Sprintf("%%%s%%", query.Name))
+	}
+
+	q.Find(&artists)
 
 	return artists
 }

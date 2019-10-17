@@ -22,6 +22,11 @@ import (
 //     required: false
 //     type: integer
 //   - in: query
+//     name: name
+//     description: Filter by song title.
+//     required: false
+//     type: string
+//   - in: query
 //     name: genre
 //     description: Filter by artist genre.
 //     required: false
@@ -60,17 +65,17 @@ import (
 func (s *server) handleSongs() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		songId := r.URL.Query().Get("songid")
+		// sort := r.URL.Query()["sort"]
+		// limit := r.URL.Query()["limit"]
+		// page := r.URL.Query()["page"]
+
 		year, _ := strconv.Atoi(r.URL.Query().Get("year"))
-		genre := r.URL.Query().Get("genre")
-		//		sort := r.URL.Query()["sort"]
-		//		limit := r.URL.Query()["limit"]
-		//		page := r.URL.Query()["page"]
 
 		songs := s.newdb.FindSongs(&repository.Query{
-			Id:    songId,
+			Id:    r.URL.Query().Get("songid"),
+			Genre: r.URL.Query().Get("genre"),
+			Name:  r.URL.Query().Get("name"),
 			Year:  year,
-			Genre: genre,
 		})
 
 		response := HttpResponse{

@@ -8,10 +8,12 @@ type Query struct {
 	Id    string
 	Year  int
 	Genre string
+	Name  string
 }
 
 type Store interface {
+	FindSong(query *Query) model.Song
 	FindSongs(query *Query) []model.Song
-	FindSong(Query *Query) model.Song
-	FindArtist(Query *Query) model.Artist
+	FindArtist(query *Query) model.Artist
+	FindArtists(query *Query) []model.Artist
 }

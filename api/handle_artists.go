@@ -2,6 +2,8 @@ package api
 
 import (
 	"net/http"
+
+	"webeng/api/repository"
 )
 
 // swagger:operation GET /artists Artists
@@ -51,15 +53,19 @@ import (
 //     description: Could not find the Artist by ID.
 func (s *server) handleArtists() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		//		name := r.URL.Query()["name"]
-		//		genre := r.URL.Query()["genre"]
-		//		sort := r.URL.Query()["sort"]
-		//		limit := r.URL.Query()["limit"]
-		//		page := r.URL.Query()["page"]
+
+		// sort := r.URL.Query()["sort"]
+		// limit := r.URL.Query()["limit"]
+		// page := r.URL.Query()["page"]
+
+		artists := s.newdb.FindArtists(&repository.Query{
+			Name:  r.URL.Query().Get("name"),
+			Genre: r.URL.Query().Get("genre")
+		})
 
 		response := HttpResponse{
 			status:  http.StatusOK,
-			payload: nil,
+			payload: artists,
 		}
 
 		response.Render(w, r)
