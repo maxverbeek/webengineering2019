@@ -3,9 +3,7 @@ package api
 import (
 	"encoding/json"
 	"log"
-	"mime"
 	"net/http"
-	"strings"
 
 	"webeng/api/model"
 
