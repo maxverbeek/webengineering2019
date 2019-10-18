@@ -19,14 +19,17 @@ type song struct {
 	model.Song
 }
 
-func (s *SqliteStore) FindSong(query *Query) model.Song {
+func (s *SqliteStore) FindSong(query *Query) *model.Song {
 	sng := &song{}
 	sng.SongId = query.Id
 
 	var res song
-	s.Db.Where(sng).Find(&res)
 
-	return res.Song
+	if s.Db.Where(sng).Find(&res).RecordNotFound() {
+		return nil
+	}
+
+	return &res.Song
 }
 
 func (s *SqliteStore) FindSongs(query *Query) []model.Song {
@@ -58,14 +61,17 @@ type artist struct {
 	model.Artist
 }
 
-func (s *SqliteStore) FindArtist(query *Query) model.Artist {
+func (s *SqliteStore) FindArtist(query *Query) *model.Artist {
 	a := &artist{}
 	a.ArtistId = query.Id
 
 	var res artist
-	s.Db.Where(a).Find(&res)
 
-	return res.Artist
+	if s.Db.Where(a).Find(&res).RecordNotFound() {
+		return nil
+	}
+
+	return &res.Artist
 }
 
 func (s *SqliteStore) FindArtists(query *Query) []model.Artist {
