@@ -35,7 +35,7 @@ func (s *server) handleIndex() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		response := HttpResponse{
 			status:  http.StatusOK,
-			payload: struct{ Message string }{ "Hello index." },
+			payload: struct{ Message string }{"Hello index."},
 		}
 
 		response.Render(w, r)

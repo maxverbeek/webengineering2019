@@ -51,6 +51,15 @@ func (s *SqliteStore) FindSongs(query *Query) []model.Song {
 		q = q.Where("songs.song_title LIKE ?", fmt.Sprintf("%%%s%%", query.Name))
 	}
 
+	if query.Limit != 0 {
+		q = q.Limit(query.Limit)
+
+		if query.Page != 0 {
+			// page 0 is the first page, page 1 is offset by Limit
+			q = q.Offset(query.Limit * query.Page)
+		}
+	}
+
 	q.Find(&songs)
 
 	return songs
@@ -85,6 +94,15 @@ func (s *SqliteStore) FindArtists(query *Query) []model.Artist {
 
 	if query.Name != "" {
 		q = q.Where("artists.artist_name LIKE ?", fmt.Sprintf("%%%s%%", query.Name))
+	}
+
+	if query.Limit != 0 {
+		q = q.Limit(query.Limit)
+
+		if query.Page != 0 {
+			// page 0 is the first page, page 1 is offset by Limit
+			q = q.Offset(query.Limit * query.Page)
+		}
 	}
 
 	q.Find(&artists)

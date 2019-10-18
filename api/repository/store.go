@@ -9,6 +9,9 @@ type Query struct {
 	Year  int
 	Genre string
 	Name  string
+
+	Page  int
+	Limit int
 }
 
 type Store interface {

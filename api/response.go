@@ -19,9 +19,9 @@ type HttpResponse struct {
 func (response *HttpResponse) Render(w http.ResponseWriter, r *http.Request) {
 	// parse the Accept header, and finds the best fitting content type
 	contentType := httputil.NegotiateContentType(
-		r, // request
+		r,                                        // request
 		[]string{"application/json", "text/csv"}, // accepts these
-		"application/json", // default content type
+		"application/json",                       // default content type
 	)
 
 	switch contentType {
@@ -53,7 +53,7 @@ func (response *HttpResponse) RenderCSV(w http.ResponseWriter, r *http.Request) 
 	switch response.payload.(type) {
 	// type assertions for multi object repsonses
 	case []model.Song:
-		err = gocsv.Marshal(response.payload.([]model.Song), w)	
+		err = gocsv.Marshal(response.payload.([]model.Song), w)
 	case []model.Artist:
 		err = gocsv.Marshal(response.payload.([]model.Artist), w)
 	// some type assertions for single types

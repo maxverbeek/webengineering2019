@@ -2,6 +2,7 @@ package api
 
 import (
 	"net/http"
+	"strconv"
 
 	"webeng/api/repository"
 )
@@ -55,12 +56,15 @@ func (s *server) handleArtists() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
 		// sort := r.URL.Query()["sort"]
-		// limit := r.URL.Query()["limit"]
-		// page := r.URL.Query()["page"]
+		limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
+		page, _ := strconv.Atoi(r.URL.Query().Get("page"))
 
 		artists := s.db.FindArtists(&repository.Query{
 			Name:  r.URL.Query().Get("name"),
 			Genre: r.URL.Query().Get("genre"),
+
+			Limit: limit,
+			Page:  page,
 		})
 
 		response := HttpResponse{
