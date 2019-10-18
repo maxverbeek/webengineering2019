@@ -29,24 +29,24 @@ func main() {
 }
 
 type MusicRecord struct {
-	artist
-	release
-	song
-}
-
-type song struct {
-	gorm.Model
+	model.Artist
+	model.Release
 	model.Song
 }
 
+type song struct {
+	gorm.Model `csv:"-"`
+	model.Song `csv:"gofuckyourself"`
+}
+
 type artist struct {
-	gorm.Model
-	model.Artist
+	gorm.Model `csv:"-"`
+	model.Artist `csv:"gofuckyourself"`
 }
 
 type release struct {
-	gorm.Model
-	model.Release
+	gorm.Model `csv:"-"`
+	model.Release `csv:"gofuckyourself"`
 }
 
 func run() error {
@@ -106,21 +106,25 @@ func run() error {
 
 	tx := db.Begin()
 
-	for _, song := range records {
-		if _, ok := artists[song.Artist.ArtistId]; !ok {
-			artists[song.artist.ArtistId] = song.artist
-			tx.Create(&song.Artist)
+	for _, record := range records {
+		if _, ok := artists[record.Artist.ArtistId]; !ok {
+			a := artist{Artist: record.Artist}
+			artists[record.Artist.ArtistId] = a
+			tx.Create(&a)
 		}
-		if _, ok := releases[song.Release.ReleaseId]; !ok {
-			releases[song.release.ReleaseId] = song.release
-			tx.Create(&song.Release)
+		if _, ok := releases[record.Release.ReleaseId]; !ok {
+			r := release{Release: record.Release}
+			releases[record.Release.ReleaseId] = r
+			tx.Create(&r)
 		}
 
-		song.Song.ArtistId = song.Artist.ArtistId
-		song.Song.ReleaseId = song.Release.ReleaseId
-		songs[song.SongId] = song.song
+		record.Song.ArtistId = record.Artist.ArtistId
+		record.Song.ReleaseId = record.Release.ReleaseId
 
-		tx.Create(&song.Song)
+		s := song{Song: record.Song}
+		songs[record.SongId] = s
+
+		tx.Create(&s)
 	}
 
 	tx.Commit()
