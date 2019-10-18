@@ -38,7 +38,10 @@ func (response *HttpResponse) Render(w http.ResponseWriter, r *http.Request) {
 func (response *HttpResponse) RenderJSON(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(response.status)
-	json.NewEncoder(w).Encode(response.payload)
+
+	encoder := json.NewEncoder(w)
+	encoder.SetIndent("", "  ")
+	encoder.Encode(response.payload)
 }
 
 func (response *HttpResponse) RenderCSV(w http.ResponseWriter, r *http.Request) {
