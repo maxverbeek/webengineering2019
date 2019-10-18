@@ -43,6 +43,11 @@ func (s *server) handleArtist() http.HandlerFunc {
 			payload: artist,
 		}
 
+		if artist == nil {
+			response.status = http.StatusNotFound
+			response.payload = struct{ Message string }{ "artist not found" }
+		}
+
 		response.Render(w, r)
 	}
 }

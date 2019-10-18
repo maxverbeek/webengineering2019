@@ -40,12 +40,12 @@ type song struct {
 }
 
 type artist struct {
-	gorm.Model `csv:"-"`
+	gorm.Model   `csv:"-"`
 	model.Artist `csv:"gofuckyourself"`
 }
 
 type release struct {
-	gorm.Model `csv:"-"`
+	gorm.Model    `csv:"-"`
 	model.Release `csv:"gofuckyourself"`
 }
 

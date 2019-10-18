@@ -42,6 +42,11 @@ func (s *server) handleSong() http.HandlerFunc {
 			payload: song,
 		}
 
+		if song == nil {
+			response.status = http.StatusNotFound
+			response.payload = struct{ Message string }{ "song not found" }
+		}
+
 		response.Render(w, r)
 	}
 }
