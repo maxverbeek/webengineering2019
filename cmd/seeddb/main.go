@@ -9,7 +9,7 @@ import (
 	"os"
 	"sort"
 
-	"webeng/api"
+	"webeng/api/model"
 
 	"github.com/gocarina/gocsv"
 	"github.com/jinzhu/gorm"
@@ -29,9 +29,24 @@ func main() {
 }
 
 type MusicRecord struct {
-	api.Artist
-	api.Release
-	api.Song
+	artist
+	release
+	song
+}
+
+type song struct {
+	gorm.Model
+	model.Song
+}
+
+type artist struct {
+	gorm.Model
+	model.Artist
+}
+
+type release struct {
+	gorm.Model
+	model.Release
 }
 
 func run() error {
@@ -43,9 +58,9 @@ func run() error {
 
 	defer db.Close()
 
-	db.AutoMigrate(&api.Artist{})
-	db.AutoMigrate(&api.Release{})
-	db.AutoMigrate(&api.Song{})
+	db.AutoMigrate(&song{})
+	db.AutoMigrate(&artist{})
+	db.AutoMigrate(&release{})
 
 	var (
 		csv io.ReadCloser
@@ -85,25 +100,25 @@ func run() error {
 		return records[i].SongYear > records[j].SongYear
 	})
 
-	artists := make(map[string]api.Artist)
-	songs := make(map[string]api.Song)
-	releases := make(map[int]api.Release)
+	artists := make(map[string]artist)
+	songs := make(map[string]song)
+	releases := make(map[int]release)
 
 	tx := db.Begin()
 
 	for _, song := range records {
 		if _, ok := artists[song.Artist.ArtistId]; !ok {
-			artists[song.Artist.ArtistId] = song.Artist
+			artists[song.artist.ArtistId] = song.artist
 			tx.Create(&song.Artist)
 		}
 		if _, ok := releases[song.Release.ReleaseId]; !ok {
-			releases[song.Release.ReleaseId] = song.Release
+			releases[song.release.ReleaseId] = song.release
 			tx.Create(&song.Release)
 		}
 
 		song.Song.ArtistId = song.Artist.ArtistId
 		song.Song.ReleaseId = song.Release.ReleaseId
-		songs[song.SongId] = song.Song
+		songs[song.SongId] = song.song
 
 		tx.Create(&song.Song)
 	}

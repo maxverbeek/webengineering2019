@@ -83,15 +83,6 @@ func (response *HttpResponse) RenderCSV(w http.ResponseWriter, r *http.Request) 
 		err = gocsv.Marshal([]model.Artist{response.payload.(model.Artist)}, w)
 		break
 
-	// type assertions for compatability with old models
-	case Song:
-		err = gocsv.Marshal([]Song{response.payload.(Song)}, w)
-		break
-
-	case Artist:
-		err = gocsv.Marshal([]Artist{response.payload.(Artist)}, w)
-		break
-
 	// we fucked
 	default:
 		log.Println("idk what to reply with")

@@ -35,7 +35,7 @@ func (s *server) handleSong() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := mux.Vars(r)["song_id"]
 
-		song := s.newdb.FindSong(&repository.Query{Id: id})
+		song := s.db.FindSong(&repository.Query{Id: id})
 
 		response := HttpResponse{
 			status:  http.StatusOK,

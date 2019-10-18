@@ -36,7 +36,7 @@ func (s *server) handleArtist() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := mux.Vars(r)["artist_id"]
 
-		artist := s.newdb.FindArtist(&repository.Query{Id: id})
+		artist := s.db.FindArtist(&repository.Query{Id: id})
 
 		response := HttpResponse{
 			status:  http.StatusOK,

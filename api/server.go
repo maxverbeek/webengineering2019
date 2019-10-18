@@ -18,7 +18,7 @@ import (
 
 type server struct {
 	router *mux.Router
-	newdb  *repository.SqliteStore
+	db     *repository.SqliteStore
 }
 
 type Config struct {
@@ -28,21 +28,21 @@ type Config struct {
 func Run(conf *Config) error {
 	r := mux.NewRouter()
 
-	db, err := gorm.Open("sqlite3", "music.db")
+	gormdb, err := gorm.Open("sqlite3", "music.db")
 
 	if err != nil {
 		return err
 	}
 
-	defer db.Close()
+	defer gormdb.Close()
 
-	db.AutoMigrate(&Song{})
-	db.AutoMigrate(&Artist{})
-	db.AutoMigrate(&Release{})
+	db := &repository.SqliteStore{
+		Db: gormdb,
+	}
 
 	server := &server{
 		router: r,
-		newdb:  &repository.SqliteStore{db},
+		db:     db,
 	}
 
 	// set up routes (routes.go)

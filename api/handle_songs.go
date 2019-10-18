@@ -71,7 +71,7 @@ func (s *server) handleSongs() http.HandlerFunc {
 
 		year, _ := strconv.Atoi(r.URL.Query().Get("year"))
 
-		songs := s.newdb.FindSongs(&repository.Query{
+		songs := s.db.FindSongs(&repository.Query{
 			Id:    r.URL.Query().Get("songid"),
 			Genre: r.URL.Query().Get("genre"),
 			Name:  r.URL.Query().Get("name"),

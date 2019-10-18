@@ -58,7 +58,7 @@ func (s *server) handleArtists() http.HandlerFunc {
 		// limit := r.URL.Query()["limit"]
 		// page := r.URL.Query()["page"]
 
-		artists := s.newdb.FindArtists(&repository.Query{
+		artists := s.db.FindArtists(&repository.Query{
 			Name:  r.URL.Query().Get("name"),
 			Genre: r.URL.Query().Get("genre"),
 		})
