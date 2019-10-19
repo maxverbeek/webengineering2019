@@ -10,6 +10,7 @@ type Query struct {
 	Genre string
 	Name  string
 
+	Sort  string
 	Page  int
 	Limit int
 }

@@ -65,10 +65,8 @@ import (
 func (s *server) handleSongs() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		// sort := r.URL.Query()["sort"]
 
 		year, _ := strconv.Atoi(r.URL.Query().Get("year"))
-
 		page, _ := strconv.Atoi(r.URL.Query().Get("page"))
 		limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
 
@@ -78,6 +76,7 @@ func (s *server) handleSongs() http.HandlerFunc {
 			Name:  r.URL.Query().Get("name"),
 			Year:  year,
 
+			Sort:  r.URL.Query().Get("sort"),
 			Page:  page,
 			Limit: limit,
 		})

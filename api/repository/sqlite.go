@@ -60,6 +60,17 @@ func (s *SqliteStore) FindSongs(query *Query) []model.Song {
 		}
 	}
 
+	query.Sort = "song_" + query.Sort
+
+	switch query.Sort {
+	case "song_hotttnesss",
+	"song_year",
+	"song_duration",
+	"song_tempo":
+		// TODO: find good way to change order
+		q = q.Order(query.Sort + " desc")
+	}
+
 	q.Find(&songs)
 
 	return songs
