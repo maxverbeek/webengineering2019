@@ -65,7 +65,6 @@ import (
 func (s *server) handleSongs() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-
 		year, _ := strconv.Atoi(r.URL.Query().Get("year"))
 		page, _ := strconv.Atoi(r.URL.Query().Get("page"))
 		limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
