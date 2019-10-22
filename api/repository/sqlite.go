@@ -61,11 +61,11 @@ func (s *SqliteStore) FindSongs(query *Query) []model.Song {
 	}
 
 	switch query.Sort {
-	case "hotttnesss",
-		"year",
-		"duration",
+	case "duration",
+		"hotttnesss",
 		"id",
-		"tempo":
+		"tempo",
+		"year":
 		// TODO: find good way to change order
 		q = q.Order(fmt.Sprintf("song_%s desc", query.Sort))
 	}
