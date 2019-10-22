@@ -16,6 +16,13 @@ type HttpResponse struct {
 	payload interface{}
 }
 
+type RestResponse struct {
+	Data    interface{}       `json:"data,omitempty" csv:",omitempty"`
+	Links   map[string]string `json:"links,omitempty" csv:"-"`
+	Success bool              `json:"success"`
+	Message string            `json:"message,omitempty" csv:",omitempty"`
+}
+
 func (response *HttpResponse) Render(w http.ResponseWriter, r *http.Request) {
 	// parse the Accept header, and finds the best fitting content type
 	contentType := httputil.NegotiateContentType(
@@ -41,6 +48,7 @@ func (response *HttpResponse) RenderJSON(w http.ResponseWriter, r *http.Request)
 
 	encoder := json.NewEncoder(w)
 	encoder.SetIndent("", "  ")
+	encoder.SetEscapeHTML(false)
 	encoder.Encode(response.payload)
 }
 

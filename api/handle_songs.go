@@ -3,6 +3,8 @@ package api
 import (
 	"net/http"
 
+	"log"
+
 	"strconv"
 	"webeng/api/repository"
 )
@@ -69,7 +71,7 @@ func (s *server) handleSongs() http.HandlerFunc {
 		page, _ := strconv.Atoi(r.URL.Query().Get("page"))
 		limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
 
-		songs := s.db.FindSongs(&repository.Query{
+		songs, total := s.db.FindSongs(&repository.Query{
 			Id:    r.URL.Query().Get("songid"),
 			Genre: r.URL.Query().Get("genre"),
 			Name:  r.URL.Query().Get("name"),
@@ -80,9 +82,51 @@ func (s *server) handleSongs() http.HandlerFunc {
 			Limit: limit,
 		})
 
+		if page*limit > total {
+			// no records beyond this
+			response := HttpResponse{
+				status: http.StatusNotFound,
+				payload: RestResponse{
+					Success: false,
+					Message: "page does not exist",
+				},
+			}
+
+			response.Render(w, r)
+			return
+		}
+
+		log.Printf("total: %d", total)
+
+		links := make(map[string]string)
+
+		newurl := *r.URL
+		values := r.URL.Query()
+
+		newurl.RawQuery = values.Encode()
+		links["self"] = newurl.RequestURI()
+
+		if page != 0 {
+			values.Set("page", strconv.Itoa(page-1))
+			newurl.RawQuery = values.Encode()
+
+			links["prev"] = newurl.RequestURI()
+		}
+
+		if (page+1)*limit < total {
+			values.Set("page", strconv.Itoa(page+1))
+			newurl.RawQuery = values.Encode()
+
+			links["next"] = newurl.RequestURI()
+		}
+
 		response := HttpResponse{
-			status:  http.StatusOK,
-			payload: songs,
+			status: http.StatusOK,
+			payload: RestResponse{
+				Data:    songs,
+				Success: true,
+				Links:   links,
+			},
 		}
 
 		response.Render(w, r)

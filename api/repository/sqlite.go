@@ -32,7 +32,7 @@ func (s *SqliteStore) FindSong(query *Query) *model.Song {
 	return &res.Song
 }
 
-func (s *SqliteStore) FindSongs(query *Query) []model.Song {
+func (s *SqliteStore) FindSongs(query *Query) ([]model.Song, int) {
 	songs := make([]model.Song, 5)
 
 	qsong := &song{}
@@ -40,7 +40,7 @@ func (s *SqliteStore) FindSongs(query *Query) []model.Song {
 	qsong.SongId = query.Id
 	qsong.SongYear = query.Year
 
-	q := s.Db.Where(qsong)
+	q := s.Db.Model(&song{}).Where(qsong)
 
 	if query.Genre != "" {
 		q = q.Joins("JOIN artists ON artists.artist_id = songs.artist_id")
@@ -50,6 +50,9 @@ func (s *SqliteStore) FindSongs(query *Query) []model.Song {
 	if query.Name != "" {
 		q = q.Where("songs.song_title LIKE ?", fmt.Sprintf("%%%s%%", query.Name))
 	}
+
+	var count int
+	q.Count(&count)
 
 	if query.Limit > 0 {
 		q = q.Limit(query.Limit)
@@ -72,7 +75,7 @@ func (s *SqliteStore) FindSongs(query *Query) []model.Song {
 
 	q.Find(&songs)
 
-	return songs
+	return songs, count
 }
 
 type artist struct {
