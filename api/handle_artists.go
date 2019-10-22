@@ -58,7 +58,7 @@ func (s *server) handleArtists() http.HandlerFunc {
 		limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
 		page, _ := strconv.Atoi(r.URL.Query().Get("page"))
 
-		artists := s.db.FindArtists(&repository.Query{
+		artists, total := s.db.FindArtists(&repository.Query{
 			Name:  r.URL.Query().Get("name"),
 			Genre: r.URL.Query().Get("genre"),
 			Sort:  r.URL.Query().Get("sort"),
@@ -67,8 +67,12 @@ func (s *server) handleArtists() http.HandlerFunc {
 		})
 
 		response := HttpResponse{
-			status:  http.StatusOK,
-			payload: artists,
+			status: http.StatusOK,
+			payload: RestResponse{
+				Data:    artists,
+				Success: true,
+				Links:   getPaginationLinks(*r.URL, total, page, limit),
+			},
 		}
 
 		response.Render(w, r)

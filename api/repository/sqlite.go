@@ -96,18 +96,21 @@ func (s *SqliteStore) FindArtist(query *Query) *model.Artist {
 	return &res.Artist
 }
 
-func (s *SqliteStore) FindArtists(query *Query) []model.Artist {
+func (s *SqliteStore) FindArtists(query *Query) ([]model.Artist, int) {
 	artists := make([]model.Artist, 5)
 
 	qartist := &artist{}
 	qartist.ArtistId = query.Id
 	qartist.ArtistTerms = query.Genre
 
-	q := s.Db.Where(qartist)
+	q := s.Db.Model(&artist{}).Where(qartist)
 
 	if query.Name != "" {
 		q = q.Where("artists.artist_name LIKE ?", fmt.Sprintf("%%%s%%", query.Name))
 	}
+
+	var count int
+	q.Count(&count)
 
 	if query.Limit > 0 {
 		q = q.Limit(query.Limit)
@@ -129,5 +132,5 @@ func (s *SqliteStore) FindArtists(query *Query) []model.Artist {
 
 	q.Find(&artists)
 
-	return artists
+	return artists, count
 }

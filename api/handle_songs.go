@@ -2,10 +2,8 @@ package api
 
 import (
 	"net/http"
-
-	"log"
-
 	"strconv"
+
 	"webeng/api/repository"
 )
 
@@ -82,50 +80,12 @@ func (s *server) handleSongs() http.HandlerFunc {
 			Limit: limit,
 		})
 
-		if page*limit > total {
-			// no records beyond this
-			response := HttpResponse{
-				status: http.StatusNotFound,
-				payload: RestResponse{
-					Success: false,
-					Message: "page does not exist",
-				},
-			}
-
-			response.Render(w, r)
-			return
-		}
-
-		log.Printf("total: %d", total)
-
-		links := make(map[string]string)
-
-		newurl := *r.URL
-		values := r.URL.Query()
-
-		newurl.RawQuery = values.Encode()
-		links["self"] = newurl.RequestURI()
-
-		if page != 0 {
-			values.Set("page", strconv.Itoa(page-1))
-			newurl.RawQuery = values.Encode()
-
-			links["prev"] = newurl.RequestURI()
-		}
-
-		if (page+1)*limit < total {
-			values.Set("page", strconv.Itoa(page+1))
-			newurl.RawQuery = values.Encode()
-
-			links["next"] = newurl.RequestURI()
-		}
-
 		response := HttpResponse{
 			status: http.StatusOK,
 			payload: RestResponse{
 				Data:    songs,
 				Success: true,
-				Links:   links,
+				Links:   getPaginationLinks(*r.URL, total, page, limit),
 			},
 		}
 
