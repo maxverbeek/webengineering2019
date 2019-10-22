@@ -54,7 +54,7 @@ func (s *SqliteStore) FindSongs(query *Query) []model.Song {
 	if query.Limit != 0 {
 		q = q.Limit(query.Limit)
 
-		if query.Page != 0 {
+		if query.Page > 0 {
 			// page 0 is the first page, page 1 is offset by Limit
 			q = q.Offset(query.Limit * query.Page)
 		}
@@ -109,7 +109,7 @@ func (s *SqliteStore) FindArtists(query *Query) []model.Artist {
 	if query.Limit != 0 {
 		q = q.Limit(query.Limit)
 
-		if query.Page != 0 {
+		if query.Page > 0 {
 			// page 0 is the first page, page 1 is offset by Limit
 			q = q.Offset(query.Limit * query.Page)
 		}
