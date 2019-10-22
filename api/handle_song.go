@@ -1,9 +1,11 @@
 package api
 
 import (
-	"github.com/gorilla/mux"
 	"net/http"
+
 	"webeng/api/repository"
+
+	"github.com/gorilla/mux"
 )
 
 // swagger:operation GET /songs/{song_id} Song
@@ -37,14 +39,25 @@ func (s *server) handleSong() http.HandlerFunc {
 
 		song := s.db.FindSong(&repository.Query{Id: id})
 
-		response := HttpResponse{
-			status:  http.StatusOK,
-			payload: song,
-		}
+		var response HttpResponse
 
-		if song == nil {
-			response.status = http.StatusNotFound
-			response.payload = struct{ Message string }{"song not found"}
+		if song != nil {
+			response = HttpResponse{
+				status: http.StatusOK,
+				payload: RestResponse{
+					Success: true,
+					Data:    song,
+					Links:   map[string]string{"self": r.URL.RequestURI()},
+				},
+			}
+		} else {
+			response = HttpResponse{
+				status: http.StatusNotFound,
+				payload: RestResponse{
+					Success: false,
+					Message: "song not found",
+				},
+			}
 		}
 
 		response.Render(w, r)
