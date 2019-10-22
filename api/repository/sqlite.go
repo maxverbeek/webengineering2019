@@ -60,15 +60,14 @@ func (s *SqliteStore) FindSongs(query *Query) []model.Song {
 		}
 	}
 
-	query.Sort = "song_" + query.Sort
-
 	switch query.Sort {
-	case "song_hotttnesss",
-		"song_year",
-		"song_duration",
-		"song_tempo":
+	case "hotttnesss",
+		"year",
+		"duration",
+		"id",
+		"tempo":
 		// TODO: find good way to change order
-		q = q.Order(query.Sort + " desc")
+		q = q.Order(fmt.Sprintf("song_%s desc", query.Sort))
 	}
 
 	q.Find(&songs)
@@ -114,6 +113,15 @@ func (s *SqliteStore) FindArtists(query *Query) []model.Artist {
 			// page 0 is the first page, page 1 is offset by Limit
 			q = q.Offset(query.Limit * query.Page)
 		}
+	}
+
+	switch query.Sort {
+	case "familiarity",
+		"hotttnesss",
+		"id",
+		"name",
+		"similar": // what is this?
+		q = q.Order(fmt.Sprintf("artist_%s desc", query.Sort))
 	}
 
 	q.Find(&artists)
