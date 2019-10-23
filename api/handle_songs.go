@@ -90,14 +90,17 @@ func (s *server) handleSongs() http.HandlerFunc {
 		data := make([]SongWithLinks, len(songs))
 
 		songroute := s.router.Get("songs_one")
+		artistroute := s.router.Get("artists_one")
 
 		for i, song := range songs {
 			songlink, _ := songroute.URL("song_id", song.SongId)
+			artistlink, _ := artistroute.URL("artist_id", song.ArtistId)
 
 			data[i] = SongWithLinks{
 				Song: song,
 				Links: Links{
 					"self": songlink.RequestURI(),
+					"artist": artistlink.RequestURI(),
 				},
 			}
 		}

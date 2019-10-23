@@ -50,6 +50,8 @@ func (s *server) handleArtist() http.HandlerFunc {
 			urlparam.Set("artist", id)
 			songsurl.RawQuery = urlparam.Encode()
 
+			statsurl, _ := s.router.Get("artists_stats").URL("artist_id", id)
+
 			response = HttpResponse{
 				status: http.StatusOK,
 				payload: RestResponse{
@@ -58,6 +60,7 @@ func (s *server) handleArtist() http.HandlerFunc {
 					Links: map[string]string{
 						"self":  r.URL.RequestURI(),
 						"songs": songsurl.RequestURI(),
+						"stats": statsurl.RequestURI(),
 					},
 				},
 			}
