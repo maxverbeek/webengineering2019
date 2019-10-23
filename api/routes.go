@@ -18,11 +18,33 @@ import (
 
 func (s *server) routes() {
 	s.router.HandleFunc("/", s.handleIndex())
-	s.router.HandleFunc("/artists", s.handleArtists())
-	s.router.HandleFunc("/artists/{artist_id}", s.handleArtist())
-	s.router.HandleFunc("/artists/{artist_id}/stats", s.handleArtistStats())
-	s.router.HandleFunc("/songs", s.handleSongs())
-	s.router.HandleFunc("/songs/{song_id}", s.handleSong())
+
+	api := s.router.PathPrefix("/api/v1").Subrouter()
+
+	api.Path("/artists").
+	    Methods("GET").
+	    HandlerFunc(s.handleArtists()).
+		Name("artists_all")
+
+	api.Path("/artists/{artist_id}").
+	    Methods("GET").
+		HandlerFunc(s.handleArtist()).
+		Name("artists_one")
+
+	api.Path("/artists/{artist_id}/stats").
+	    Methods("GET").
+		HandlerFunc(s.handleArtistStats()).
+		Name("artists_stats")
+
+	api.Path("/songs").
+	    Methods("GET").
+		HandlerFunc(s.handleSongs()).
+		Name("songs_all")
+
+	api.Path("/songs/{song_id}").
+	    Methods("GET").
+		HandlerFunc(s.handleSong()).
+		Name("songs_one")
 }
 
 // swagger:operation GET / index
