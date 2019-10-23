@@ -34,6 +34,7 @@ import (
 //   404:
 //     description: Could not find the song by ID.
 func (s *server) handleSong() http.HandlerFunc {
+
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := mux.Vars(r)["song_id"]
 
@@ -42,12 +43,18 @@ func (s *server) handleSong() http.HandlerFunc {
 		var response HttpResponse
 
 		if song != nil {
+
+			artisturl, _ := s.router.Get("artists_one").URL("artist_id", song.ArtistId)
+
 			response = HttpResponse{
 				status: http.StatusOK,
 				payload: RestResponse{
 					Success: true,
 					Data:    song,
-					Links:   map[string]string{"self": r.URL.RequestURI()},
+					Links:   map[string]string{
+						"self": r.URL.RequestURI(),
+						"artist": artisturl.RequestURI(),
+					},
 				},
 			}
 		} else {

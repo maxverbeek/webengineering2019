@@ -36,6 +36,8 @@ import (
 //   404:
 //     description: Could not find the Artist by ID.
 func (s *server) handleArtist() http.HandlerFunc {
+
+
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := mux.Vars(r)["artist_id"]
 
@@ -43,13 +45,22 @@ func (s *server) handleArtist() http.HandlerFunc {
 
 		var response HttpResponse
 
+
 		if artist != nil {
+			songsurl, _ := s.router.Get("songs_all").URL()
+			urlparam := songsurl.Query()
+			urlparam.Set("artist", id)
+			songsurl.RawQuery = urlparam.Encode()
+
 			response = HttpResponse{
 				status: http.StatusOK,
 				payload: RestResponse{
 					Success: true,
 					Data:    artist,
-					Links:   map[string]string{"self": r.URL.RequestURI()},
+					Links:   map[string]string{
+						"self": r.URL.RequestURI(),
+						"songs": songsurl.RequestURI(),
+					},
 				},
 			}
 		} else {
@@ -112,6 +123,13 @@ func (s *server) handleArtistStats() http.HandlerFunc {
 		median, _ := stats.Median(hotnesses)
 		stdev, _ := stats.StandardDeviation(hotnesses)
 
+		songurl, _ := s.router.Get("songs_all").URL()
+		songqueryvals := songurl.Query()
+		songqueryvals.Set("artist", id)
+		songurl.RawQuery = songqueryvals.Encode()
+
+		artisturl, _ := s.router.Get("artists_one").URL("artist_id", id)
+
 		response := HttpResponse{
 			status:  http.StatusOK,
 			payload: RestResponse{
@@ -122,6 +140,11 @@ func (s *server) handleArtistStats() http.HandlerFunc {
 					Mean: mean,
 					Median: median,
 					StandardDeviation: stdev,
+				},
+				Links: map[string]string{
+					"self": r.URL.RequestURI(),
+					"artist": artisturl.RequestURI(),
+					"songs": songurl.RequestURI(),
 				},
 			},
 		}

@@ -46,7 +46,7 @@ func (s *SqliteStore) FindSongs(query *Query) ([]model.Song, int) {
 		q = q.Joins("JOIN artists ON artists.artist_id = songs.artist_id")
 
 		if query.Genre != "" {
-			q = q.Where("artists.artist_terms = ?", query.Genre)
+			q = q.Where("artists.artist_terms LIKE ?", fmt.Sprintf("%%%s%%", query.Genre))
 		}
 
 		if query.OtherId != "" {
