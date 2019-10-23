@@ -17,7 +17,6 @@ import (
 )
 
 func (s *server) routes() {
-	s.router.HandleFunc("/", s.handleIndex())
 
 	api := s.router.PathPrefix("/api/v1").Subrouter()
 
@@ -45,6 +44,8 @@ func (s *server) routes() {
 	    Methods("GET").
 		HandlerFunc(s.handleSong()).
 		Name("songs_one")
+
+	s.router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 }
 
 // swagger:operation GET / index
