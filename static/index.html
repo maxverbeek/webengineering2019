@@ -5,39 +5,22 @@
     <!-- development version, includes helpful console warnings -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <link href="http://nl.allfont.net/allfont.css?fonts=comic-sans-ms" rel="stylesheet" type="text/css" />
-    <link rel="style/css" href="style.css"/>
+    <link rel="stylesheet" href="style.css"/>
   </head>
-  <body>
-    <div id="bar">
-      Search for:
-      <select v-model="searchType">
-        <option>songs</option>
-        <option>artists</option>
-      </select>
-      | Filter by
-      year: <input v-model="yearField">
-      genre: <input v-model="genreField">
-      | Sort by
-      <select v-model="sortBy">
-        <option>None</option>
-        <option>Hotttnesss</option>
-        <option>ID</option>
-        <option v-show="searchType === 'songs'">Title</option>
-        <option v-show="searchType === 'songs'">Tempo</option>
-        <option v-show="searchType === 'songs'">Year</option>
-        <option v-show="searchType === 'artists'">Name</option>
-        <option v-show="searchType === 'artists'">Familiarity</option>
-        <option v-show="searchType === 'artists'">Similar</option>
-      </select>
-      |
-      <input v-model="searchField">
-      <button v-on:click="search">Search</button>
+  <body class="centering">
+    <div class="container">
+      <div id="logo">
+        <img src="songle.svg">
+      </div>
+      <div id="search">
+        <input id="songleSearch" v-model="searchField">
+        <div>
+          <button id="searchSong" v-on:click="searchSong">Search Song</button>
+          <button id="searchArist" v-on:click="searchArtist">Search Artist</button>
+        </div>
+      </div>
     </div>
-    <div id="app">
-      {{ message }}
-    </div>
-    <script src="script.js"></script>
+    <script src="index.js"></script>
   </body>
 </html>
 

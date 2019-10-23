@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="style.css"/>
+  </head>
+  <body>
+    <div id="bar" v-on:keyup.enter="search">
+      <img src="songle.svg">
+      <span class="centerRow">
+        Search for:
+        <select v-model="searchType">
+          <option>Songs</option>
+          <option>Artists</option>
+        </select>
+        | Filter by
+        year: <input v-model="yearField" size="4">
+        genre: <input v-model="genreField" size="16">
+        | Sort by
+        <select v-model="sortBy">
+          <option>None</option>
+          <option>Hotttnesss</option>
+          <option>ID</option>
+          <option v-show="searchType === 'Songs'">Title</option>
+          <option v-show="searchType === 'Songs'">Tempo</option>
+          <option v-show="searchType === 'Songs'">Year</option>
+          <option v-show="searchType === 'Artists'">Name</option>
+          <option v-show="searchType === 'Artists'">Familiarity</option>
+          <option v-show="searchType === 'Artists'">Similar</option>
+        </select>
+        |
+        <input v-model="searchField">
+        <button v-on:click="search">Search</button>
+      </span>
+    </div>
+    <div id="table">
+      <table style="width:100%">
+        <tr>
+          <th v-for="header in headers">
+            {{header}}
+          </th>
+        </tr>
+        <tr v-for="row in rows">
+          <td v-for="data in row">
+            {{data}}
+          </td>
+        </tr>
+      </table>
+    </div>
+    <script src="search.js"></script>
+  </body>
+</html>
+
+
