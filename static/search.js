@@ -22,6 +22,7 @@ var bar = new Vue({
     searchType: 'Songs',
     yearField: '',
     genreField: '',
+    artistFilter: '',
     sortBy: 'None',
     searchField: '',
     limit: 50,
@@ -35,6 +36,7 @@ var bar = new Vue({
           + "?name=" + encodeURI(this.searchField)
           + "&genre=" + encodeURI(this.genreField.toLowerCase())
           + "&year=" + encodeURI(this.yearField)
+          + "&artist=" + encodeURI(this.artistFilter)
           + "&sort=" + encodeURI(this.sortBy.toLowerCase())
           + "&limit=" + encodeURI(this.limit)
           + "&page=" + encodeURI(this.page)
@@ -51,10 +53,10 @@ var bar = new Vue({
             ]
             response.data.data.forEach(data => {
               table.rows.push([
-                data.title,
-                data.ArtistId,
-                data.duration,
-                data.year
+                [data.title, "/song.html?link=" + encodeURI(data.links.self)],
+                [data.ArtistId, null],
+                [data.duration, null],
+                [data.year, null],
               ]);
             })
           } else {
@@ -65,9 +67,9 @@ var bar = new Vue({
             ]
             response.data.data.forEach(data => {
               table.rows.push([
-                data.ArtistName,
-                data.ArtistId,
-                data.ArtistTerms
+                [data.ArtistName, "/artist.html?link=" + encodeURI(data.links.self)],
+                [data.ArtistId, null],
+                [data.ArtistTerms, null]
               ]);
             })
           }
@@ -82,5 +84,8 @@ if(getParameterByName('type') != null){
 if(getParameterByName('search') != null ){
   bar.searchField = getParameterByName('search');
   bar.search();
-
+}
+if(getParameterByName('artist') != null ){
+  bar.artistFilter = getParameterByName('artist');
+  bar.search();
 }

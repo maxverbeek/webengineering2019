@@ -45,10 +45,20 @@
         </tr>
         <tr v-for="row in rows">
           <td v-for="data in row">
-            {{data}}
+            <template v-if="data[1] === null">
+              {{data[0]}}
+            </template>
+            <template v-else>
+              <a v-bind:href="data[1]"> {{data[0]}}</a>
+            </template>
           </td>
         </tr>
       </table>
+      <!--
+      <pre>
+      {{response}}
+      </pre>
+      -->
     </div>
     <script src="search.js"></script>
   </body>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="style.css"/>
+  </head>
+  <body>
+    <div id="bar" v-on:keyup.enter="search">
+      <a href="/index.html"> <img src="songle.svg"> </a>
+      <span class="centerRow">
+      </span>
+    </div>
+    <div id="song" class="centering">
+      <table>
+        <tr><td colspan="2"><h2>{{song.title}}</h2></td></tr>
+        <tr><td>ID</td><td>{{song.id}}</td></tr>
+        <tr><td>Artist</td>
+          <td><a v-bind:href="'artist.html?link=' + links.artist">
+          {{artist.ArtistName}}
+        </a></td></tr>
+        <tr><td>Artist genre</td><td>{{artist.ArtistTerms}}</td></tr>
+        <tr v-if="song.year != 0"><td>Release year</td><td>{{song.year}}</td></tr>
+        <tr><td>Duration</td><td>{{song.duration}}s</td></tr>
+        <tr><td>Tempo</td><td>{{song.SongTempo}} bpm</td></tr>
+      </table>
+      <!--
+      <pre>
+        {{song}}
+        {{artist}}
+        {{links}}
+     </pre>
+      -->
+    </div>
+    <script src="song.js"></script>
+  </body>
+</html>
+
+
