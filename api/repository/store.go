@@ -9,6 +9,7 @@ type Query struct {
 	Year  int
 	Genre string
 	Name  string
+	OtherId string
 
 	Sort  string
 	Page  int

@@ -2,10 +2,12 @@ package api
 
 import (
 	"net/http"
+	"strconv"
 
 	"webeng/api/repository"
 
 	"github.com/gorilla/mux"
+	"github.com/montanaflynn/stats"
 )
 
 // swagger:operation GET /artists/{artist_id} Artist
@@ -91,11 +93,37 @@ func (s *server) handleArtist() http.HandlerFunc {
 //     description: Could not find the artist by ID.
 func (s *server) handleArtistStats() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		//		id := mux.Vars(r)["artist_id"]
+		id := mux.Vars(r)["artist_id"]
+
+		year, _ := strconv.Atoi(r.URL.Query().Get("year"))
+
+		songs, total := s.db.FindSongs(&repository.Query{
+			OtherId: id,
+			Year: year,
+		})
+
+		hotnesses := make([]float64, total)
+
+		for idx, song := range songs {
+			hotnesses[idx] = song.SongHotttnesss
+		}
+
+		mean, _ := stats.Mean(hotnesses)
+		median, _ := stats.Median(hotnesses)
+		stdev, _ := stats.StandardDeviation(hotnesses)
 
 		response := HttpResponse{
 			status:  http.StatusOK,
-			payload: nil,
+			payload: RestResponse{
+				Success: true,
+				Data: struct {
+					Mean, Median, StandardDeviation float64
+				}{
+					Mean: mean,
+					Median: median,
+					StandardDeviation: stdev,
+				},
+			},
 		}
 
 		response.Render(w, r)

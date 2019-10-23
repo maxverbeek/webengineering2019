@@ -42,9 +42,16 @@ func (s *SqliteStore) FindSongs(query *Query) ([]model.Song, int) {
 
 	q := s.Db.Model(&song{}).Where(qsong)
 
-	if query.Genre != "" {
+	if query.Genre != "" || query.OtherId != "" {
 		q = q.Joins("JOIN artists ON artists.artist_id = songs.artist_id")
-		q = q.Where("artists.artist_terms = ?", query.Genre)
+
+		if query.Genre != "" {
+			q = q.Where("artists.artist_terms = ?", query.Genre)
+		}
+
+		if query.OtherId != "" {
+			q = q.Where("artists.artist_id = ?", query.OtherId)
+		}
 	}
 
 	if query.Name != "" {
@@ -67,6 +74,7 @@ func (s *SqliteStore) FindSongs(query *Query) ([]model.Song, int) {
 	case "duration",
 		"hotttnesss",
 		"id",
+		"title",
 		"tempo",
 		"year":
 		// TODO: find good way to change order

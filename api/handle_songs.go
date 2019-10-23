@@ -71,6 +71,7 @@ func (s *server) handleSongs() http.HandlerFunc {
 
 		songs, total := s.db.FindSongs(&repository.Query{
 			Id:    r.URL.Query().Get("songid"),
+			OtherId: r.URL.Query().Get("artist"),
 			Genre: r.URL.Query().Get("genre"),
 			Name:  r.URL.Query().Get("name"),
 			Year:  year,
