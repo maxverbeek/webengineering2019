@@ -53,12 +53,13 @@ body{
   width: 50%;
 }
 .centering img{
-  width: 100%;
+  width: auto;
+  height: 100%;
 }
 
 #logo {
-  width:100%;
-  height: auto;
+  width: auto;
+  height: 15vh;
 }
 
 #search {
