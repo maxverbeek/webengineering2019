@@ -37,14 +37,12 @@ import (
 //     description: Could not find the Artist by ID.
 func (s *server) handleArtist() http.HandlerFunc {
 
-
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := mux.Vars(r)["artist_id"]
 
 		artist := s.db.FindArtist(&repository.Query{Id: id})
 
 		var response HttpResponse
-
 
 		if artist != nil {
 			songsurl, _ := s.router.Get("songs_all").URL()
@@ -57,8 +55,8 @@ func (s *server) handleArtist() http.HandlerFunc {
 				payload: RestResponse{
 					Success: true,
 					Data:    artist,
-					Links:   map[string]string{
-						"self": r.URL.RequestURI(),
+					Links: map[string]string{
+						"self":  r.URL.RequestURI(),
 						"songs": songsurl.RequestURI(),
 					},
 				},
@@ -110,7 +108,7 @@ func (s *server) handleArtistStats() http.HandlerFunc {
 
 		songs, total := s.db.FindSongs(&repository.Query{
 			OtherId: id,
-			Year: year,
+			Year:    year,
 		})
 
 		hotnesses := make([]float64, total)
@@ -131,20 +129,20 @@ func (s *server) handleArtistStats() http.HandlerFunc {
 		artisturl, _ := s.router.Get("artists_one").URL("artist_id", id)
 
 		response := HttpResponse{
-			status:  http.StatusOK,
+			status: http.StatusOK,
 			payload: RestResponse{
 				Success: true,
 				Data: struct {
 					Mean, Median, StandardDeviation float64
 				}{
-					Mean: mean,
-					Median: median,
+					Mean:              mean,
+					Median:            median,
 					StandardDeviation: stdev,
 				},
 				Links: map[string]string{
-					"self": r.URL.RequestURI(),
+					"self":   r.URL.RequestURI(),
 					"artist": artisturl.RequestURI(),
-					"songs": songurl.RequestURI(),
+					"songs":  songurl.RequestURI(),
 				},
 			},
 		}

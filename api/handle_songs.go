@@ -4,8 +4,14 @@ import (
 	"net/http"
 	"strconv"
 
+	"webeng/api/model"
 	"webeng/api/repository"
 )
+
+type SongWithLinks struct {
+	model.Song
+	Links `json:"links,omitempty"` // handlerutils.go
+}
 
 // swagger:operation GET /songs Songs
 // ---
@@ -70,21 +76,36 @@ func (s *server) handleSongs() http.HandlerFunc {
 		limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
 
 		songs, total := s.db.FindSongs(&repository.Query{
-			Id:    r.URL.Query().Get("songid"),
+			Id:      r.URL.Query().Get("songid"),
 			OtherId: r.URL.Query().Get("artist"),
-			Genre: r.URL.Query().Get("genre"),
-			Name:  r.URL.Query().Get("name"),
-			Year:  year,
+			Genre:   r.URL.Query().Get("genre"),
+			Name:    r.URL.Query().Get("name"),
+			Year:    year,
 
 			Sort:  r.URL.Query().Get("sort"),
 			Page:  page,
 			Limit: limit,
 		})
 
+		data := make([]SongWithLinks, len(songs))
+
+		songroute := s.router.Get("songs_one")
+
+		for i, song := range songs {
+			songlink, _ := songroute.URL("song_id", song.SongId)
+
+			data[i] = SongWithLinks{
+				Song: song,
+				Links: Links{
+					"self": songlink.RequestURI(),
+				},
+			}
+		}
+
 		response := HttpResponse{
 			status: http.StatusOK,
 			payload: RestResponse{
-				Data:    songs,
+				Data:    data,
 				Success: true,
 				Links:   getPaginationLinks(*r.URL, total, page, limit),
 			},

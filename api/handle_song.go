@@ -51,8 +51,8 @@ func (s *server) handleSong() http.HandlerFunc {
 				payload: RestResponse{
 					Success: true,
 					Data:    song,
-					Links:   map[string]string{
-						"self": r.URL.RequestURI(),
+					Links: map[string]string{
+						"self":   r.URL.RequestURI(),
 						"artist": artisturl.RequestURI(),
 					},
 				},

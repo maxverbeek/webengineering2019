@@ -21,27 +21,27 @@ func (s *server) routes() {
 	api := s.router.PathPrefix("/api/v1").Subrouter()
 
 	api.Path("/artists").
-	    Methods("GET").
-	    HandlerFunc(s.handleArtists()).
+		Methods("GET").
+		HandlerFunc(s.handleArtists()).
 		Name("artists_all")
 
 	api.Path("/artists/{artist_id}").
-	    Methods("GET").
+		Methods("GET").
 		HandlerFunc(s.handleArtist()).
 		Name("artists_one")
 
 	api.Path("/artists/{artist_id}/stats").
-	    Methods("GET").
+		Methods("GET").
 		HandlerFunc(s.handleArtistStats()).
 		Name("artists_stats")
 
 	api.Path("/songs").
-	    Methods("GET").
+		Methods("GET").
 		HandlerFunc(s.handleSongs()).
 		Name("songs_all")
 
 	api.Path("/songs/{song_id}").
-	    Methods("GET").
+		Methods("GET").
 		HandlerFunc(s.handleSong()).
 		Name("songs_one")
 

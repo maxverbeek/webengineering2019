@@ -5,8 +5,10 @@ import (
 	"strconv"
 )
 
+type Links map[string]string
+
 func getPaginationLinks(url url.URL, total, page, limit int) map[string]string {
-	links := make(map[string]string)
+	links := make(Links)
 
 	values := url.Query()
 

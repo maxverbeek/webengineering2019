@@ -4,8 +4,14 @@ import (
 	"net/http"
 	"strconv"
 
+	"webeng/api/model"
 	"webeng/api/repository"
 )
+
+type ArtistWithLinks struct {
+	model.Artist
+	Links `json:"links,omitempty"` // handlerutils.go
+}
 
 // swagger:operation GET /artists Artists
 // ---
@@ -66,10 +72,25 @@ func (s *server) handleArtists() http.HandlerFunc {
 			Page:  page,
 		})
 
+		data := make([]ArtistWithLinks, len(artists))
+
+		artistroute := s.router.Get("artists_one")
+
+		for i, artist := range artists {
+			artistlink, _ := artistroute.URL("artist_id", artist.ArtistId)
+
+			data[i] = ArtistWithLinks{
+				Artist: artist,
+				Links: Links{
+					"self": artistlink.RequestURI(),
+				},
+			}
+		}
+
 		response := HttpResponse{
 			status: http.StatusOK,
 			payload: RestResponse{
-				Data:    artists,
+				Data:    data,
 				Success: true,
 				Links:   getPaginationLinks(*r.URL, total, page, limit),
 			},
