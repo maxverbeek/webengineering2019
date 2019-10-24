@@ -110,5 +110,10 @@ body{
   margin: 10px;
 }
 
+#addArtist {
+  margin-top: 20vh;
+  color: transparent;
+}
+
 table tr:nth-child(even) {
 }
