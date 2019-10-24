@@ -37,7 +37,7 @@ body{
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: left;
+  justify-content: flex-start;
   width: 100%;
 }
 
@@ -45,7 +45,7 @@ body{
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: right;
+  justify-content: flex-end;
   width: 100%;
 }
 
@@ -113,6 +113,14 @@ body{
 #addArtist {
   margin-top: 20vh;
   color: transparent;
+}
+
+.link {
+  color: blue;
+  cursor: pointer;
+}
+.link:hover {
+  text-decoration: underline;
 }
 
 table tr:nth-child(even) {
