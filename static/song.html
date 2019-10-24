@@ -19,12 +19,12 @@
         <tr><td>ID</td><td>{{song.id}}</td></tr>
         <tr><td>Artist</td>
           <td><a v-bind:href="'artist.html?link=' + links.artist">
-          {{artist.ArtistName}}
+          {{artist.name}}
         </a></td></tr>
-        <tr><td>Artist genre</td><td>{{artist.ArtistTerms}}</td></tr>
+        <tr><td>Artist genre</td><td>{{artist.terms}}</td></tr>
         <tr v-if="song.year != 0"><td>Release year</td><td>{{song.year}}</td></tr>
         <tr><td>Duration</td><td>{{song.duration}}s</td></tr>
-        <tr><td>Tempo</td><td>{{song.SongTempo}} bpm</td></tr>
+        <tr><td>Tempo</td><td>{{song.tempo}} bpm</td></tr>
       </table>
       <!--
       <pre>

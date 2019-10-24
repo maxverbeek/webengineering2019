@@ -61,6 +61,21 @@
       </pre>
       -->
     </div>
+    <span id="footer" >
+      <div v-if="prev != null">
+        <a v-on:click="previousPage" class="link">&lt</a> &nbsp
+      </div>
+      <div v-else>
+        - &nbsp
+      </div>
+      {{page}}
+      <div v-if="next != null">
+        &nbsp <a v-on:click="nextPage" class="link">&gt</a>
+      </div>
+      <div v-else>
+        &nbsp -
+      </div>
+    </span>
     <script src="search.js"></script>
   </body>
 </html>

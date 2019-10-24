@@ -15,15 +15,15 @@
     </div>
     <div id="artist" class="centering">
       <table>
-        <tr><td colspan="2"><h2>{{artist.ArtistName}}</h2></td></tr>
-        <tr><td>ID</td><td>{{artist.ArtistId}}</td></tr>
-        <tr><td>Artist genre</td><td>{{artist.ArtistTerms}}</td></tr>
-        <tr><td>Songs</td><td><a v-bind:href="'/search.html?artist=' + artist.ArtistId"> {{songs.length}} </a></td></tr>
+        <tr><td colspan="2"><h2>{{artist.name}}</h2></td></tr>
+        <tr><td>ID</td><td>{{artist.id}}</td></tr>
+        <tr><td>Artist genre</td><td>{{artist.terms}}</td></tr>
+        <tr><td>Songs</td><td><a v-bind:href="'/search.html?artist=' + artist.id"> {{songs.length}} </a></td></tr>
 
         <tr><td colspan="2"><strong>Artist popularity (hotttnesss)</strong></td></tr>
-        <tr><td>Mean</td><td>{{stats.Mean}}</td></tr>
-        <tr><td>Median</td><td>{{stats.Median}}</td></tr>
-        <tr><td>Standard Deviation</td><td>{{stats.StandardDeviation}}</td></tr>
+        <tr><td>Mean</td><td>{{stats.mean}}</td></tr>
+        <tr><td>Median</td><td>{{stats.median}}</td></tr>
+        <tr><td>Standard Deviation</td><td>{{stats.standard_deviation}}</td></tr>
       </table>
       <!--
       <pre>

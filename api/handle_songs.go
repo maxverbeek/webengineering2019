@@ -3,7 +3,6 @@ package api
 import (
 	"net/http"
 	"strconv"
-	"log"
 
 	"webeng/api/model"
 	"webeng/api/repository"
@@ -87,7 +86,6 @@ func (s *server) handleSongs() http.HandlerFunc {
 			Page:  page,
 			Limit: limit,
 		})
-		log.Println(r.URL.Query().Get("name"))
 		data := make([]SongWithLinks, len(songs))
 
 		songroute := s.router.Get("songs_one")

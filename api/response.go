@@ -13,7 +13,7 @@ import (
 
 type HttpResponse struct {
 	status  int
-	payload interface{}
+	payload RestResponse
 }
 
 type RestResponse struct {
@@ -57,24 +57,23 @@ func (response *HttpResponse) RenderCSV(w http.ResponseWriter, r *http.Request) 
 	w.WriteHeader(response.status)
 
 	var err error
-
-	switch response.payload.(type) {
+	
+	switch response.payload.Data.(type) {
 	// type assertions for multi object repsonses
-	case []model.Song:
-		err = gocsv.Marshal(response.payload.([]model.Song), w)
-	case []model.Artist:
-		err = gocsv.Marshal(response.payload.([]model.Artist), w)
+	case []SongWithLinks:
+		err = gocsv.Marshal(response.payload.Data.([]SongWithLinks), w)
+	case []ArtistWithLinks:
+		err = gocsv.Marshal(response.payload.Data.([]ArtistWithLinks), w)
 	// some type assertions for single types
-	case model.Song:
-		err = gocsv.Marshal([]model.Song{response.payload.(model.Song)}, w)
-	case model.Artist:
-		err = gocsv.Marshal([]model.Artist{response.payload.(model.Artist)}, w)
-	case RestResponse:
-		log.Print(response.payload.(RestResponse).Data)
-		err = gocsv.Marshal(response.payload.(RestResponse).Data, w)
+	case *model.Song:
+		err = gocsv.Marshal([]*model.Song{response.payload.Data.(*model.Song)}, w)
+	case *model.Artist:
+		err = gocsv.Marshal([]*model.Artist{response.payload.Data.(*model.Artist)}, w)
+	case ArtistStats:
+		err = gocsv.Marshal([]ArtistStats{response.payload.Data.(ArtistStats)}, w)
 	// we fucked
 	default:
-		log.Println("idk what to reply with")
+		log.Printf("I got: %+v ; idk what to reply with\n", response.payload.Data)
 	}
 
 	if err != nil {

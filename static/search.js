@@ -16,6 +16,29 @@ var table = new Vue({
     rows: []
   }
 })
+
+var footer = new Vue({
+  el: '#footer',
+  data: {
+    prev: null,
+    page: 0,
+    next: null
+  },
+  methods: {
+    previousPage: function(){
+      this.page--;
+      bar.search();
+    },
+    currentPage: function(){
+      bar.search();
+    },
+    nextPage: function(){
+      this.page++;
+      bar.search();
+    }
+  }
+});
+
 var bar = new Vue({
   el: '#bar',
   data: {
@@ -25,8 +48,7 @@ var bar = new Vue({
     artistFilter: '',
     sortBy: 'None',
     searchField: '',
-    limit: 50,
-    page: 0
+    limit: 50
   },
   methods: {
     search: function(){
@@ -37,13 +59,13 @@ var bar = new Vue({
           'Accept': 'application/json'
         },
         params: {
-          name: encodeURI(this.searchField),
-          genre: encodeURI(this.genreField.toLowerCase()),
-          year: encodeURI(this.yearField),
-          artist: encodeURI(this.artistFilter),
-          sort: encodeURI(this.sortBy.toLowerCase()),
-          limit: encodeURI(this.limit),
-          page: encodeURI(this.page),
+          name: this.searchField,
+          genre: this.genreField.toLowerCase(),
+          year: this.yearField,
+          artist: this.artistFilter,
+          sort: this.sortBy.toLowerCase(),
+          limit: this.limit,
+          page: footer.page
         }
       }).then( response => {
           table.response = response;
@@ -55,12 +77,12 @@ var bar = new Vue({
               'Duration',
               'Year'
             ]
-            response.data.data.forEach(data => {
+            response.data.data.forEach(song => {
               table.rows.push([
-                [data.title, "/song.html?link=" + encodeURI(data.links.self)],
-                [data.ArtistId, null],
-                [data.duration, null],
-                [data.year, null],
+                [song.title, "/song.html?link=" + encodeURI(song.links.self)],
+                [song.artist_id, null],
+                [song.duration, null],
+                [song.year, null],
               ]);
             })
           } else {
@@ -69,14 +91,16 @@ var bar = new Vue({
               'ArtistId',
               'Genre'
             ]
-            response.data.data.forEach(data => {
+            response.data.data.forEach(artist => {
               table.rows.push([
-              [data.ArtistName, "/artist.html?link=" + encodeURI(data.links.self)],
-              [data.ArtistId, null],
-              [data.ArtistTerms, null]
+              [artist.name, "/artist.html?link=" + encodeURI(artist.links.self)],
+              [artist.id, null],
+              [artist.terms, null]
             ]);
           })
         }
+        footer.prev = response.data.links.prev;
+        footer.next = response.data.links.next;
       })
     },
     getCsv: function(){
@@ -87,18 +111,23 @@ var bar = new Vue({
           'Accept': 'text/csv'
         },
         params: {
-          name: encodeURI(this.searchField),
-          genre: encodeURI(this.genreField.toLowerCase()),
-          year: encodeURI(this.yearField),
-          artist: encodeURI(this.artistFilter),
-          sort: encodeURI(this.sortBy.toLowerCase()),
-          limit: encodeURI(this.limit),
-          page: encodeURI(this.page),
+          name: this.searchField,
+          genre: this.genreField.toLowerCase(),
+          year: this.yearField,
+          artist: this.artistFilter,
+          sort: this.sortBy.toLowerCase(),
+          limit: this.limit,
+          page: footer.page
         }
       }).then( response => {
-        var newWindow = window.open();
-        newWindow.document.write(response.data);
-	console.log(response);
+        console.log(response.data);
+        var blob = new Blob([response.data]);
+        var a = window.document.createElement("a");
+        a.href = window.URL.createObjectURL(blob, {type: "text/plain"});
+        a.download = this.searchType.toLowerCase() + ".csv";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
       });
     }
   }
@@ -106,6 +135,9 @@ var bar = new Vue({
 
 if(getParameterByName('type') != null){
   bar.searchType = getParameterByName('type');
+}
+if(getParameterByName('page') != null){
+  footer.page = getParameterByName('page');
 }
 if(getParameterByName('search') != null ){
   bar.searchField = getParameterByName('search');

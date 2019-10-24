@@ -78,6 +78,12 @@ func (s *server) handleArtist() http.HandlerFunc {
 	}
 }
 
+type ArtistStats struct {
+	Mean float64 `json:"mean" csv:"mean"`
+	Median float64 `json:"median" csv:"median"`
+	StandardDeviation float64 `json:"standard_deviation" csv:"standard_deviation"`
+}
+
 // swagger:operation GET /artists/{artist_id}/stats ArtistStats
 // ---
 // description: Gets the statistics of an artist by the given ID.
@@ -135,9 +141,7 @@ func (s *server) handleArtistStats() http.HandlerFunc {
 			status: http.StatusOK,
 			payload: RestResponse{
 				Success: true,
-				Data: struct {
-					Mean, Median, StandardDeviation float64
-				}{
+				Data: ArtistStats{
 					Mean:              mean,
 					Median:            median,
 					StandardDeviation: stdev,
