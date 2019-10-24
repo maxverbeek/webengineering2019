@@ -18,32 +18,37 @@ import (
 
 func (s *server) routes() {
 
+	s.router.StrictSlash(true)
+
 	api := s.router.PathPrefix("/api/v1").Subrouter()
 
 	api.Path("/artists").
-		Methods("GET").
+		Methods(http.MethodGet).
 		HandlerFunc(s.handleArtists()).
 		Name("artists_all")
 
 	api.Path("/artists/{artist_id}").
-		Methods("GET").
+		Methods(http.MethodGet).
 		HandlerFunc(s.handleArtist()).
 		Name("artists_one")
 
 	api.Path("/artists/{artist_id}/stats").
-		Methods("GET").
+		Methods(http.MethodGet).
 		HandlerFunc(s.handleArtistStats()).
 		Name("artists_stats")
 
 	api.Path("/songs").
-		Methods("GET").
+		Methods(http.MethodGet).
 		HandlerFunc(s.handleSongs()).
 		Name("songs_all")
 
 	api.Path("/songs/{song_id}").
-		Methods("GET").
+		Methods(http.MethodGet).
 		HandlerFunc(s.handleSong()).
 		Name("songs_one")
 
-	s.router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
+	s.router.
+		PathPrefix("/").
+		Methods(http.MethodGet).
+		Handler(http.FileServer(http.Dir("./static/")))
 }
