@@ -113,6 +113,19 @@ func (s *server) handleArtistStats() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := mux.Vars(r)["artist_id"]
 
+		if s.db.FindArtist(&repository.Query{ Id: id }) == nil {
+			response := HttpResponse{
+				status: http.StatusNotFound,
+				payload: RestResponse{
+					Success: false,
+					Message: "artist not found",
+				},
+			}
+
+			response.Render(w, r)
+			return
+		}
+
 		year, _ := strconv.Atoi(r.URL.Query().Get("year"))
 
 		songs, total := s.db.FindSongs(&repository.Query{
