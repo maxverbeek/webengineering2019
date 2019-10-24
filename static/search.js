@@ -15,7 +15,7 @@ var table = new Vue({
     headers: [],
     rows: []
   }
-})
+});
 
 var footer = new Vue({
   el: '#footer',
@@ -142,7 +142,7 @@ var bar = new Vue({
       });
     }
   }
-})
+});
 
 if(getParameterByName('type') != null){
   bar.searchType = getParameterByName('type');
