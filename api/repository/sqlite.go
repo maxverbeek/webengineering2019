@@ -101,6 +101,17 @@ func (s *SqliteStore) DeleteSong(query *Query) bool {
 	return false
 }
 
+func (s *SqliteStore) CreateSong(newsong *model.Song) bool {
+	if s.FindSong(&Query{Id: newsong.SongId}) != nil {
+		// song exists
+		return false
+	}
+
+	s.Db.Create(&song{Song: *newsong})
+
+	return true
+}
+
 type artist struct {
 	gorm.Model
 	model.Artist

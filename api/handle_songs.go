@@ -3,6 +3,8 @@ package api
 import (
 	"net/http"
 	"strconv"
+	"encoding/json"
+	"log"
 
 	"webeng/api/model"
 	"webeng/api/repository"
@@ -189,5 +191,61 @@ func (s *server) handleDeleteSong() http.HandlerFunc {
 		})
 
 		w.WriteHeader(http.StatusNoContent)
+	}
+}
+
+func (s *server) handleCreateSong() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var data model.Song
+
+		json.NewDecoder(r.Body).Decode(&data)
+
+		log.Printf("%+v\n", data)
+
+		if s.db.CreateSong(&data) {
+
+			links := make(Links)
+
+			if data.SongId != "" {
+				songlink, _ := s.router.Get("songs_one").URL("song_id", data.SongId)
+				links["self"] = songlink.RequestURI()
+			}
+
+			if data.ArtistId != "" {
+				artistlink, _ := s.router.Get("artists_one").URL("artist_id", data.ArtistId)
+				links["artist"] = artistlink.RequestURI()
+			}
+
+			response := HttpResponse{
+				status: http.StatusCreated,
+				payload: RestResponse{
+					Data: data,
+					Success: true,
+					Links: links,
+				},
+			}
+
+			response.Render(w, r)
+		} else {
+			response := HttpResponse{
+				status: http.StatusConflict,
+				payload: RestResponse{
+					Success: false,
+					Message: "failed to create song",
+				},
+			}
+
+			response.Render(w, r)
+		}
+	}
+}
+
+func (s *server) handleUpdateSong() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var data map[string]interface{}
+
+		json.NewDecoder(r.Body).Decode(&data)
+
+		log.Printf("%+v\n", data)
 	}
 }

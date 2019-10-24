@@ -51,6 +51,14 @@ func (s *server) routes() {
 	    Methods(http.MethodDelete).
 		HandlerFunc(s.handleDeleteSong())
 
+	api.Path("/songs").
+	    Methods(http.MethodPost).
+		HandlerFunc(s.handleCreateSong())
+
+	api.Path("/songs").
+	    Methods(http.MethodPut).
+		HandlerFunc(s.handleUpdateSong())
+
 	s.router.
 		PathPrefix("/").
 		Methods(http.MethodGet).
