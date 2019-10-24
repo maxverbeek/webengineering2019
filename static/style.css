@@ -23,6 +23,7 @@ body{
 
 #footer {
   display: flex;
+  box-sizing: border-box;
   flex-direction: row;
   position: fixed;
   left:0;

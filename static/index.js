@@ -15,4 +15,5 @@ var search = new Vue({
       window.location.href = "/search.html?type=Artists&search=" + encodeURI(search.searchField);
     }
   }
-})
+});
+

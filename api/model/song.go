@@ -14,7 +14,7 @@ type SongShort struct {
 type Song struct {
 	SongShort
 	SongArtistMbtags            float64 `json:"artist_mbtags" csv:"song.artist_mbtags"`
-	SongArtistMbtagsCount       float64 `json:"artist_mdtags_count" csv:"song.artist_mbtags_count"`
+	SongArtistMbtagsCount       float64 `json:"artist_mbtags_count" csv:"song.artist_mbtags_count"`
 	SongBarsConfidence          float64 `json:"bars_confidence" csv:"song.bars_confidence"`
 	SongBarsStart               float64 `json:"bars_start" csv:"song.bars_start"`
 	SongBeatsConfidence         float64 `json:"beats_confidence" csv:"song.beats_confidence"`
