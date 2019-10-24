@@ -17,10 +17,10 @@ type HttpResponse struct {
 }
 
 type RestResponse struct {
-	Data    interface{}       `json:"data,omitempty" csv:",omitempty"`
+	Data    interface{}       `json:"data,omitempty" csv:"-"`
 	Links   map[string]string `json:"links,omitempty" csv:"-"`
-	Success bool              `json:"success"`
-	Message string            `json:"message,omitempty" csv:",omitempty"`
+	Success bool              `json:"success" csv:"success"`
+	Message string            `json:"message,omitempty" csv:"message,omitempty"`
 }
 
 func (response *HttpResponse) Render(w http.ResponseWriter, r *http.Request) {
@@ -57,6 +57,12 @@ func (response *HttpResponse) RenderCSV(w http.ResponseWriter, r *http.Request) 
 	w.WriteHeader(response.status)
 
 	var err error
+
+	if !response.payload.Success {
+		// render payload instead
+		err = gocsv.Marshal([]RestResponse{response.payload}, w)
+		return
+	}
 
 	switch response.payload.Data.(type) {
 	// type assertions for multi object repsonses

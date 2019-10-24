@@ -200,21 +200,30 @@ func (s *server) handleCreateSong() http.HandlerFunc {
 
 		json.NewDecoder(r.Body).Decode(&data)
 
+		if data.SongId != "" || data.ArtistId != "" {
+			response := HttpResponse{
+				status: http.StatusBadRequest,
+				payload: RestResponse{
+					Success: false,
+					Message: "song ID and artist ID are mandatory",
+				},
+			}
+
+			response.Render(w, r)
+			return
+		}
+
 		log.Printf("%+v\n", data)
 
 		if s.db.CreateSong(&data) {
 
+
 			links := make(Links)
 
-			if data.SongId != "" {
-				songlink, _ := s.router.Get("songs_one").URL("song_id", data.SongId)
-				links["self"] = songlink.RequestURI()
-			}
-
-			if data.ArtistId != "" {
-				artistlink, _ := s.router.Get("artists_one").URL("artist_id", data.ArtistId)
-				links["artist"] = artistlink.RequestURI()
-			}
+			songlink, _ := s.router.Get("songs_one").URL("song_id", data.SongId)
+			artistlink, _ := s.router.Get("artists_one").URL("artist_id", data.ArtistId)
+			links["self"] = songlink.RequestURI()
+			links["artist"] = artistlink.RequestURI()
 
 			response := HttpResponse{
 				status: http.StatusCreated,
