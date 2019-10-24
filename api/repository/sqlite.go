@@ -112,6 +112,27 @@ func (s *SqliteStore) CreateSong(newsong *model.Song) bool {
 	return true
 }
 
+func (s *SqliteStore) UpdateSong(query *Query, data map[string]interface{}) bool {
+	qsong := &song{}
+	qsong.SongId = query.Id
+
+	var song song
+	if s.Db.Where(qsong).Find(&song).RecordNotFound() {
+		// cannot update non-existing record
+		return false
+	}
+
+	fixedData := make(map[string]interface{})
+
+	for k, v := range data {
+		fixedData["song_" + k] = v
+	}
+
+	s.Db.Model(&song).Updates(fixedData)
+
+	return true
+}
+
 type artist struct {
 	gorm.Model
 	model.Artist

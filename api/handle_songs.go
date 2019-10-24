@@ -242,10 +242,16 @@ func (s *server) handleCreateSong() http.HandlerFunc {
 
 func (s *server) handleUpdateSong() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		id := mux.Vars(r)["song_id"]
+
 		var data map[string]interface{}
 
 		json.NewDecoder(r.Body).Decode(&data)
 
+		s.db.UpdateSong(&repository.Query{Id: id}, data)
+
 		log.Printf("%+v\n", data)
+
+		w.WriteHeader(http.StatusNoContent)
 	}
 }
