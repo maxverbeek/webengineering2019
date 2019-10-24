@@ -34,7 +34,6 @@
         |
         <input v-model="searchField">
         <button v-on:click="search">Search</button>
-	<button v-on:click="getCsv">As CSV</button>
       </span>
     </div>
     <div id="table">
@@ -62,19 +61,28 @@
       -->
     </div>
     <span id="footer" >
-      <div v-if="prev != null">
-        <a v-on:click="previousPage" class="link">&lt</a> &nbsp
-      </div>
-      <div v-else>
-        - &nbsp
-      </div>
-      {{page}}
-      <div v-if="next != null">
-        &nbsp <a v-on:click="nextPage" class="link">&gt</a>
-      </div>
-      <div v-else>
-        &nbsp -
-      </div>
+      <span class="leftJustify">
+        items per page: <input v-on:keyup.enter="search" v-model="limit" size="4">
+      </span>
+      <span class="centerRow">
+        <a v-on:click="getCsv" class="link">download csv</a>
+      </span>
+      <span class="rightJustify">
+        <div v-if="prev != null">
+          <a v-on:click="previousPage" class="link">&lt</a> &nbsp
+        </div>
+        <div v-else>
+          - &nbsp
+        </div>
+        {{page}}
+        <div v-if="next != null">
+          &nbsp <a v-on:click="nextPage" class="link">&gt</a>
+        </div>
+        <div v-else>
+          &nbsp -
+        </div>
+        &nbsp &nbsp
+      </span>
     </span>
     <script src="search.js"></script>
   </body>

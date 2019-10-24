@@ -21,6 +21,7 @@ var footer = new Vue({
   el: '#footer',
   data: {
     prev: null,
+    limit: 50,
     page: 0,
     next: null
   },
@@ -35,6 +36,12 @@ var footer = new Vue({
     nextPage: function(){
       this.page++;
       bar.search();
+    },
+    search: function(){
+      bar.search();
+    },
+    getCsv: function(){
+      bar.getCsv();
     }
   }
 });
@@ -48,7 +55,6 @@ var bar = new Vue({
     artistFilter: '',
     sortBy: 'None',
     searchField: '',
-    limit: 50
   },
   methods: {
     search: function(){
@@ -64,7 +70,7 @@ var bar = new Vue({
           year: this.yearField,
           artist: this.artistFilter,
           sort: this.sortBy.toLowerCase(),
-          limit: this.limit,
+          limit: footer.limit,
           page: footer.page
         }
       }).then( response => {
@@ -116,7 +122,7 @@ var bar = new Vue({
           year: this.yearField,
           artist: this.artistFilter,
           sort: this.sortBy.toLowerCase(),
-          limit: this.limit,
+          limit: footer.limit,
           page: footer.page
         }
       }).then( response => {
