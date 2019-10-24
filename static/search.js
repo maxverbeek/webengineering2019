@@ -76,8 +76,10 @@ var bar = new Vue({
       }).then( response => {
           table.response = response;
           table.rows = [];
+          var index = footer.limit*footer.page+1;
           if(this.searchType == 'Songs'){
             table.headers = [
+              '',
               'Title',
               'ArtistId',
               'Duration',
@@ -85,6 +87,7 @@ var bar = new Vue({
             ]
             response.data.data.forEach(song => {
               table.rows.push([
+                [index++, null],
                 [song.title, "/song.html?link=" + encodeURI(song.links.self)],
                 [song.artist_id, null],
                 [song.duration, null],
@@ -93,20 +96,22 @@ var bar = new Vue({
             })
           } else {
             table.headers = [
+              '',
               'Name',
               'ArtistId',
               'Genre'
             ]
             response.data.data.forEach(artist => {
               table.rows.push([
-              [artist.name, "/artist.html?link=" + encodeURI(artist.links.self)],
-              [artist.id, null],
-              [artist.terms, null]
-            ]);
-          })
-        }
-        footer.prev = response.data.links.prev;
-        footer.next = response.data.links.next;
+                [index++, null],
+                [artist.name, "/artist.html?link=" + encodeURI(artist.links.self)],
+                [artist.id, null],
+                [artist.terms, null]
+              ]);
+            })
+          }
+          footer.prev = response.data.links.prev;
+          footer.next = response.data.links.next;
       })
     },
     getCsv: function(){
@@ -144,6 +149,9 @@ if(getParameterByName('type') != null){
 }
 if(getParameterByName('page') != null){
   footer.page = getParameterByName('page');
+}
+if(getParameterByName('limit') != null){
+  footer.limit = getParameterByName('limit');
 }
 if(getParameterByName('search') != null ){
   bar.searchField = getParameterByName('search');
