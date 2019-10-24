@@ -82,15 +82,15 @@ var bar = new Vue({
               '',
               'Title',
               'ArtistId',
-              'Duration',
+              'Hotness',
               'Year'
             ]
             response.data.data.forEach(song => {
               table.rows.push([
                 [index++, null],
                 [song.title, "/song.html?link=" + encodeURI(song.links.self)],
-                [song.artist_id, null],
-                [song.duration, null],
+                [song.artist_id, "/artist.html?link=" + encodeURI(song.links.artist)],
+                [song.hotttnesss, null],
                 [song.year, null],
               ]);
             })
