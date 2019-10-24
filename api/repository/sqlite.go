@@ -86,6 +86,21 @@ func (s *SqliteStore) FindSongs(query *Query) ([]model.Song, int) {
 	return songs, count
 }
 
+func (s *SqliteStore) DeleteSong(query *Query) bool {
+	sq := &song{}
+	sq.SongId = query.Id
+
+	var count int
+	s.Db.Model(&song{}).Where(sq).Count(&count)
+
+	if count == 1 {
+		s.Db.Unscoped().Where(sq).Delete(&song{})
+		return true
+	}
+
+	return false
+}
+
 type artist struct {
 	gorm.Model
 	model.Artist

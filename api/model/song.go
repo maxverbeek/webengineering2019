@@ -1,8 +1,8 @@
 package model
 
 type SongShort struct {
-	ArtistId     string `json:"artist_id"`
-	ReleaseId    int `json:"release_id"`
+	ArtistId     string  `json:"artist_id"`
+	ReleaseId    int     `json:"release_id"`
 	SongId       string  `csv:"song.id" json:"id"`
 	SongTitle    string  `csv:"song.title" json:"title"`
 	SongYear     int     `csv:"song.year" json:"year"`

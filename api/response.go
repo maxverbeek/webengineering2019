@@ -57,7 +57,7 @@ func (response *HttpResponse) RenderCSV(w http.ResponseWriter, r *http.Request) 
 	w.WriteHeader(response.status)
 
 	var err error
-	
+
 	switch response.payload.Data.(type) {
 	// type assertions for multi object repsonses
 	case []SongWithLinks:
