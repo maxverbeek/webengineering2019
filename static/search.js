@@ -30,18 +30,22 @@ var bar = new Vue({
   },
   methods: {
     search: function(){
-      axios
-        .get('/api/v1/'
-          + this.searchType.toLowerCase()
-          + "?name=" + encodeURI(this.searchField)
-          + "&genre=" + encodeURI(this.genreField.toLowerCase())
-          + "&year=" + encodeURI(this.yearField)
-          + "&artist=" + encodeURI(this.artistFilter)
-          + "&sort=" + encodeURI(this.sortBy.toLowerCase())
-          + "&limit=" + encodeURI(this.limit)
-          + "&page=" + encodeURI(this.page)
-        )
-        .then(response => {
+      axios({
+        method: 'get',
+        url: '/api/v1/' + this.searchType.toLowerCase(),
+        headers: {
+          'Accept': 'application/json'
+        },
+        params: {
+          name: encodeURI(this.searchField),
+          genre: encodeURI(this.genreField.toLowerCase()),
+          year: encodeURI(this.yearField),
+          artist: encodeURI(this.artistFilter),
+          sort: encodeURI(this.sortBy.toLowerCase()),
+          limit: encodeURI(this.limit),
+          page: encodeURI(this.page),
+        }
+      }).then( response => {
           table.response = response;
           table.rows = [];
           if(this.searchType == 'Songs'){
@@ -67,13 +71,35 @@ var bar = new Vue({
             ]
             response.data.data.forEach(data => {
               table.rows.push([
-                [data.ArtistName, "/artist.html?link=" + encodeURI(data.links.self)],
-                [data.ArtistId, null],
-                [data.ArtistTerms, null]
-              ]);
-            })
-          }
-        })
+              [data.ArtistName, "/artist.html?link=" + encodeURI(data.links.self)],
+              [data.ArtistId, null],
+              [data.ArtistTerms, null]
+            ]);
+          })
+        }
+      })
+    },
+    getCsv: function(){
+      axios({
+        method: 'get',
+        url: '/api/v1/' + this.searchType.toLowerCase(),
+        headers: {
+          'Accept': 'text/csv'
+        },
+        params: {
+          name: encodeURI(this.searchField),
+          genre: encodeURI(this.genreField.toLowerCase()),
+          year: encodeURI(this.yearField),
+          artist: encodeURI(this.artistFilter),
+          sort: encodeURI(this.sortBy.toLowerCase()),
+          limit: encodeURI(this.limit),
+          page: encodeURI(this.page),
+        }
+      }).then( response => {
+        var newWindow = window.open();
+        newWindow.document.write(response.data);
+	console.log(response);
+      });
     }
   }
 })

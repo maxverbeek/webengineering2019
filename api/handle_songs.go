@@ -3,6 +3,7 @@ package api
 import (
 	"net/http"
 	"strconv"
+	"log"
 
 	"webeng/api/model"
 	"webeng/api/repository"
@@ -86,7 +87,7 @@ func (s *server) handleSongs() http.HandlerFunc {
 			Page:  page,
 			Limit: limit,
 		})
-
+		log.Println(r.URL.Query().Get("name"))
 		data := make([]SongWithLinks, len(songs))
 
 		songroute := s.router.Get("songs_one")
@@ -104,7 +105,6 @@ func (s *server) handleSongs() http.HandlerFunc {
 				},
 			}
 		}
-
 		response := HttpResponse{
 			status: http.StatusOK,
 			payload: RestResponse{
@@ -113,7 +113,6 @@ func (s *server) handleSongs() http.HandlerFunc {
 				Links:   getPaginationLinks(*r.URL, total, page, limit),
 			},
 		}
-
 		response.Render(w, r)
 	}
 }
