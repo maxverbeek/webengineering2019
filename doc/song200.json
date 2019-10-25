@@ -28,7 +28,8 @@
   },
   "links": {
     "artist": "/api/v1/artists/ARWPYQI1187FB4D55A",
-    "self": "/api/v1/songs/SOCWJDB12A58A776AF"
+    "self": "/api/v1/songs/SOCWJDB12A58A776AF",
+    "youtube_embed": "https://youtube.com/embed/dQw4w9WgXcQ"
   },
   "success": true
 }
