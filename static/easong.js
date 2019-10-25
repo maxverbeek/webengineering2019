@@ -65,6 +65,7 @@ var song = new Vue({
       time_signature: null,
       time_signature_confidence: null
     },
+    link: null,
     code: 200,
     message: ''
   }
@@ -98,7 +99,38 @@ var footer = new Vue({
       })
     },
     editSong: function(){
-
+      var dat = {};
+      for( k in song.song ){
+        console.log(k);
+        if(song.song[k] != null){
+          switch(k){
+            case 'artist_id':
+            case 'id':
+            case 'title':
+              dat[k] = song.song[k];
+              break;
+            case 'release_id':
+            case 'year':
+            case 'mode':
+              dat[k] = parseInt(song.song[k]);
+              break;
+            default:
+              dat[k] = parseFloat(song.song[k]);
+          }
+        }
+      }
+      axios({
+        method: 'put',
+        url: song.link,
+        data: dat,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then( response => {
+        alert("Song updated!");
+      }).catch( error => {
+        alert(error.response.status + ": " + error.response.data.message);
+      })
     }
   }
 });
@@ -108,6 +140,7 @@ var footer = new Vue({
     try{
       response = await axios.get(getParameterByName('link'));
       song.pholders = response.data.data;
+      song.link = getParameterByName('link');
       song.code = response.status;
     } catch(e) {
       song.code = e.response.status;

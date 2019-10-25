@@ -1,0 +1,4 @@
+ArtistId,ReleaseId,song.id,song.title,song.year,song.duration,song.artist_mbtags,song.artist_mbtags_count,song.bars_confidence,song.bars_start,song.beats_confidence,song.beats_start,song.end_of_fade_in,song.hotttnesss,song.key,song.key_confidence,song.loudness,song.mode,song.mode_confidence,song.start_of_fade_out,song.tatums_confidence,song.tatums_start,song.tempo,song.time_signature,song.time_signature_confidence
+
+ARWPYQI1187FB4D55A,786795,SOCWJDB12A58A776AF,Never Gonna Give You Up,1987,211.69587,0,1,0.029,0.42384,1,0.42384,0.139,0.864248831,1,0.324,-7.75,1,0.434,198.536,0.988,0.15965,113.359,4,0.634
+

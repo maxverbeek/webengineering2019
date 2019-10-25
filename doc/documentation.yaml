@@ -3,168 +3,188 @@ definitions:
   Artist:
     description: The artist model
     properties:
-      ArtistFamiliarity:
+      familiarity:
         format: double
         type: number
-      ArtistHotttnesss:
+        x-go-name: ArtistFamiliarity
+      hotttnesss:
         format: double
         type: number
-      ArtistId:
+        x-go-name: ArtistHotttnesss
+      id:
         type: string
-      ArtistLatitude:
+        x-go-name: ArtistId
+      latitude:
         format: double
         type: number
-      ArtistLocation:
+        x-go-name: ArtistLatitude
+      location:
         format: int64
         type: integer
-      ArtistLongitude:
+        x-go-name: ArtistLocation
+      longitude:
         format: double
         type: number
-      ArtistName:
+        x-go-name: ArtistLongitude
+      name:
         type: string
-      ArtistSimilar:
+        x-go-name: ArtistName
+      similar:
         format: double
         type: number
-      ArtistTerms:
+        x-go-name: ArtistSimilar
+      terms:
         type: string
-      ArtistTermsFreq:
+        x-go-name: ArtistTerms
+      terms_freq:
         format: double
         type: number
-      CreatedAt:
-        format: date-time
-        type: string
-      DeletedAt:
-        format: date-time
-        type: string
-      ID:
-        format: uint64
-        type: integer
-      UpdatedAt:
-        format: date-time
-        type: string
+        x-go-name: ArtistTermsFreq
     type: object
-    x-go-package: webeng/api
-  Model:
-    description: |-
-      Model base model definition, including fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`, which could be embedded in your models
-      type User struct {
-      gorm.Model
-      }
+    x-go-package: webeng/api/model
+  Release:
+    description: The release (album) model
     properties:
-      CreatedAt:
-        format: date-time
-        type: string
-      DeletedAt:
-        format: date-time
-        type: string
-      ID:
-        format: uint64
-        type: integer
-      UpdatedAt:
-        format: date-time
-        type: string
-    type: object
-    x-go-package: github.com/jinzhu/gorm
-  Song:
-    description: The Song model
-    properties:
-      ArtistId:
-        type: string
-      CreatedAt:
-        format: date-time
-        type: string
-      DeletedAt:
-        format: date-time
-        type: string
-      ID:
-        format: uint64
-        type: integer
       ReleaseId:
         format: int64
         type: integer
-      SongArtistMbtags:
-        format: double
-        type: number
-      SongArtistMbtagsCount:
-        format: double
-        type: number
-      SongBarsConfidence:
-        format: double
-        type: number
-      SongBarsStart:
-        format: double
-        type: number
-      SongBeatsConfidence:
-        format: double
-        type: number
-      SongBeatsStart:
-        format: double
-        type: number
-      SongDuration:
-        format: double
-        type: number
-      SongEndFadeIn:
-        format: double
-        type: number
-      SongHotttnesss:
-        format: double
-        type: number
-      SongId:
-        type: string
-      SongKey:
-        format: double
-        type: number
-      SongKeyConfidence:
-        format: double
-        type: number
-      SongLoudness:
-        format: double
-        type: number
-      SongMode:
+      ReleaseName:
         format: int64
         type: integer
-      SongModeConfidence:
-        format: double
-        type: number
-      SongStartFadeOut:
-        format: double
-        type: number
-      SongTatumsConfidence:
-        format: double
-        type: number
-      SongTatumsStart:
-        format: double
-        type: number
-      SongTempo:
-        format: double
-        type: number
-      SongTimeSignature:
-        format: double
-        type: number
-      SongTimeSignatureConfidence:
-        format: double
-        type: number
-      SongTitle:
-        type: string
-      SongYear:
-        format: int64
-        type: integer
-      UpdatedAt:
-        format: date-time
-        type: string
     type: object
-    x-go-package: webeng/api
+    x-go-package: webeng/api/model
+  Song:
+    description: The Song model
+    properties:
+      artist_id:
+        type: string
+        x-go-name: ArtistId
+      artist_mbtags:
+        format: double
+        type: number
+        x-go-name: SongArtistMbtags
+      artist_mbtags_count:
+        format: double
+        type: number
+        x-go-name: SongArtistMbtagsCount
+      bars_confidence:
+        format: double
+        type: number
+        x-go-name: SongBarsConfidence
+      bars_start:
+        format: double
+        type: number
+        x-go-name: SongBarsStart
+      beats_confidence:
+        format: double
+        type: number
+        x-go-name: SongBeatsConfidence
+      beats_start:
+        format: double
+        type: number
+        x-go-name: SongBeatsStart
+      duration:
+        format: double
+        type: number
+        x-go-name: SongDuration
+      end_of_fade_in:
+        format: double
+        type: number
+        x-go-name: SongEndFadeIn
+      hotttnesss:
+        format: double
+        type: number
+        x-go-name: SongHotttnesss
+      id:
+        type: string
+        x-go-name: SongId
+      key:
+        format: double
+        type: number
+        x-go-name: SongKey
+      key_confidence:
+        format: double
+        type: number
+        x-go-name: SongKeyConfidence
+      loudness:
+        format: double
+        type: number
+        x-go-name: SongLoudness
+      mode:
+        format: int64
+        type: integer
+        x-go-name: SongMode
+      mode_confidence:
+        format: double
+        type: number
+        x-go-name: SongModeConfidence
+      release_id:
+        format: int64
+        type: integer
+        x-go-name: ReleaseId
+      start_of_fade_out:
+        format: double
+        type: number
+        x-go-name: SongStartFadeOut
+      tatums_confidence:
+        format: double
+        type: number
+        x-go-name: SongTatumsConfidence
+      tatums_start:
+        format: double
+        type: number
+        x-go-name: SongTatumsStart
+      tempo:
+        format: double
+        type: number
+        x-go-name: SongTempo
+      time_signature:
+        format: double
+        type: number
+        x-go-name: SongTimeSignature
+      time_signature_confidence:
+        format: double
+        type: number
+        x-go-name: SongTimeSignatureConfidence
+      title:
+        type: string
+        x-go-name: SongTitle
+      year:
+        format: int64
+        type: integer
+        x-go-name: SongYear
+    type: object
+    x-go-package: webeng/api/model
+  SongShort:
+    properties:
+      artist_id:
+        type: string
+        x-go-name: ArtistId
+      duration:
+        format: double
+        type: number
+        x-go-name: SongDuration
+      id:
+        type: string
+        x-go-name: SongId
+      release_id:
+        format: int64
+        type: integer
+        x-go-name: ReleaseId
+      title:
+        type: string
+        x-go-name: SongTitle
+      year:
+        format: int64
+        type: integer
+        x-go-name: SongYear
+    type: object
+    x-go-package: webeng/api/model
 info:
   description: This is an api for accessing an manipulating a music database.
   title: Music API
   version: 0.1.0
 paths:
-  /:
-    get:
-      operationId: index
-      responses:
-        "200":
-          description: successful operation
   /artists:
     get:
       description: Gets a list of artists.
@@ -178,7 +198,8 @@ paths:
         in: query
         name: genre
         type: string
-      - description: sort by; {hotttnesss}.
+      - description: sort by `familiarity`, `hotttnesss`, `id`, `name`, `similar`.
+          Will always be descending.
         in: query
         name: sort
         type: string
@@ -195,17 +216,9 @@ paths:
           description: Yields list of artists.
           examples:
             application/json:
-            - can: auto
-              gen: this
-              stupid: shit
-              to: do
-              when: we
-            text/csv: |
-              to,do,when,we,can
-              auto,gen,this,stupid,shit
-              auto,gen,this,stupid,shit
-        "404":
-          description: Could not find the Artist by ID.
+              $ref: artists200.json
+            text/csv:
+              $ref: artists200.csv
   /artists/{artist_id}:
     get:
       description: Gets an artist by the given ID.
@@ -221,17 +234,16 @@ paths:
           description: Yields artist by ID.
           examples:
             application/json:
-            - can: auto
-              gen: this
-              stupid: shit
-              to: do
-              when: we
-            text/csv: |
-              to,do,when,we,can
-              auto,gen,this,stupid,shit
-              auto,gen,this,stupid,shit
+              $ref: artist200.json
+            text/csv:
+              $ref: artist200.csv
         "404":
           description: Could not find the Artist by ID.
+          examples:
+            application/json:
+              $ref: artist404.json
+            text/csv:
+              $ref: artist404.csv
   /artists/{artist_id}/stats:
     get:
       description: Gets the statistics of an artist by the given ID.
@@ -244,20 +256,19 @@ paths:
         type: string
       responses:
         "200":
-          description: Yields artist's statistics by ID.
+          description: Yields artist statistics by ID.
           examples:
             application/json:
-            - can: auto
-              gen: this
-              stupid: shit
-              to: do
-              when: we
-            text/csv: |
-              to,do,when,we,can
-              auto,gen,this,stupid,shit
-              auto,gen,this,stupid,shit
+              $ref: stats200.json
+            text/csv:
+              $ref: stats200.csv
         "404":
-          description: Could not find the artist by ID.
+          description: Could not find the Artist by ID.
+          examples:
+            application/json:
+              $ref: stats404.json
+            text/csv:
+              $ref: stats404.csv
   /songs:
     get:
       description: Gets a list of songs
@@ -271,11 +282,16 @@ paths:
         in: query
         name: year
         type: integer
+      - description: Filter by song title.
+        in: query
+        name: name
+        type: string
       - description: Filter by artist genre.
         in: query
         name: genre
         type: string
-      - description: sort by; {hotttnesss}.
+      - description: sort by `duration`, `hotttnesss`, `id`, `title`, `tempo` or `year`.
+          Will always be descending.
         in: query
         name: sort
         type: string
@@ -292,21 +308,55 @@ paths:
           description: Yields list of songs.
           examples:
             application/json:
-            - can: auto
-              gen: this
-              stupid: shit
-              to: do
-              when: we
-            text/csv: |
-              to,do,when,we,can
-              auto,gen,this,stupid,shit
-              auto,gen,this,stupid,shit
-        "404":
-          description: Could not find the Artist by ID.
+              $ref: songs200.json
+            text/csv:
+              $ref: songs200.csv
+    post:
+      description: Attempts to add the given song to the database. Only `id` and `artist_id`
+        are required, missing or extra fields are ignored.
+      operationId: Create
+      responses:
+        "201":
+          description: Song was successfully created.
+          examples:
+            application/json:
+              $ref: postSong201.json
+            text/csv:
+              $ref: postSong201.csv
+        "400":
+          description: The `id` or `artist_id` is missing.
+          examples:
+            application/json:
+              $ref: postSong400.json
+            text/csv:
+              $ref: postSong400.csv
+        "409":
+          description: Song with `id` already exists.
+          examples:
+            application/json:
+              $ref: postSong409.json
+            text/csv:
+              $ref: postSong409.csv
+      tags:
+      - Song
   /songs/{song_id}:
+    delete:
+      description: Attempts to Delete the song with the given ID.
+      operationId: Delete
+      parameters:
+      - description: ID of the song.
+        in: path
+        name: song_id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: Song was deleted.
+      tags:
+      - Song
     get:
       description: Gets a song by the given ID.
-      operationId: Song
+      operationId: Read
       parameters:
       - description: ID of the song.
         in: path
@@ -318,17 +368,39 @@ paths:
           description: Yields song by ID.
           examples:
             application/json:
-            - can: auto
-              gen: this
-              stupid: shit
-              to: do
-              when: we
-            text/csv: |
-              to,do,when,we,can
-              auto,gen,this,stupid,shit
-              auto,gen,this,stupid,shit
+              $ref: song200.json
+            text/csv:
+              $ref: song200.csv
         "404":
           description: Could not find the song by ID.
+          examples:
+            application/json:
+              $ref: song404.json
+            text/csv:
+              $ref: song404.csv
+      tags:
+      - Song
+    put:
+      description: Attempts to update the given song in the database.
+      operationId: Update
+      parameters:
+      - description: ID of the song.
+        in: path
+        name: song_id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: Song was updated.
+        "404":
+          description: Song {song_id} does not exist.
+          examples:
+            application/json:
+              $ref: putSong404.json
+            text/csv:
+              $ref: putSong404.csv
+      tags:
+      - Song
 produces:
 - application/json
 - text/csv

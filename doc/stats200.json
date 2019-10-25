@@ -1,0 +1,13 @@
+{
+  "data": {
+    "mean": 0.5172786326666666,
+    "median": 0.459386685,
+    "standard_deviation": 0.17466006241604443
+  },
+  "links": {
+    "artist": "/api/v1/artists/ARWPYQI1187FB4D55A",
+    "self": "/api/v1/artists/ARWPYQI1187FB4D55A/stats",
+    "songs": "/api/v1/songs?artist=ARWPYQI1187FB4D55A"
+  },
+  "success": true
+}

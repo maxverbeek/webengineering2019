@@ -12,7 +12,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// swagger:operation GET /songs/{song_id} Song
+// swagger:operation GET /songs/{song_id} Song Read
 // ---
 // description: Gets a song by the given ID.
 // parameters:
@@ -26,17 +26,16 @@ import (
 //     description: Yields song by ID.
 //     examples:
 //       application/json:
-//         - to: do
-//           when: we
-//           can: auto
-//           gen: this
-//           stupid: shit
-//       text/csv: |
-//         to,do,when,we,can
-//         auto,gen,this,stupid,shit
-//         auto,gen,this,stupid,shit
+//         $ref: 'song200.json'
+//       text/csv:
+//         $ref: 'song200.csv'
 //   404:
 //     description: Could not find the song by ID.
+//     examples:
+//       application/json:
+//         $ref: 'song404.json'
+//       text/csv:
+//         $ref: 'song404.csv'
 func (s *server) handleSong() http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -106,7 +105,8 @@ type SongWithLinks struct {
 //     type: string
 //   - in: query
 //     name: sort
-//     description: sort by; {hotttnesss}.
+//     description: sort by `duration`, `hotttnesss`, `id`, `title`, `tempo` or
+//       `year`. Will always be descending.
 //     required: false
 //     type: string
 //   - in: query
@@ -124,17 +124,9 @@ type SongWithLinks struct {
 //     description: Yields list of songs.
 //     examples:
 //       application/json:
-//         - to: do
-//           when: we
-//           can: auto
-//           gen: this
-//           stupid: shit
-//       text/csv: |
-//         to,do,when,we,can
-//         auto,gen,this,stupid,shit
-//         auto,gen,this,stupid,shit
-//   404:
-//     description: Could not find the Artist by ID.
+//         $ref: 'songs200.json'
+//       text/csv:
+//         $ref: 'songs200.csv'
 func (s *server) handleSongs() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
@@ -143,7 +135,6 @@ func (s *server) handleSongs() http.HandlerFunc {
 		limit, _ := strconv.Atoi(r.URL.Query().Get("limit"))
 
 		songs, total := s.db.FindSongs(&repository.Query{
-			Id:      r.URL.Query().Get("songid"),
 			OtherId: r.URL.Query().Get("artist"),
 			Genre:   r.URL.Query().Get("genre"),
 			Name:    r.URL.Query().Get("name"),
@@ -182,6 +173,18 @@ func (s *server) handleSongs() http.HandlerFunc {
 	}
 }
 
+// swagger:operation DELETE /songs/{song_id} Song Delete
+// ---
+// description: Attempts to Delete the song with the given ID.
+// parameters:
+//   - in: path
+//     name: song_id
+//     description: ID of the song.
+//     required: true
+//     type: string
+// responses:
+//   204:
+//     description: Song was deleted.
 func (s *server) handleDeleteSong() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := mux.Vars(r)["song_id"]
@@ -194,6 +197,35 @@ func (s *server) handleDeleteSong() http.HandlerFunc {
 	}
 }
 
+// swagger:operation POST /songs Song Create
+// ---
+// description: Attempts to add the given song to the database. Only `id` and
+//   `artist_id` are required, missing or extra fields are ignored.
+// content:
+//   application/json:
+//     $ref: 'rickroll.json'
+// responses:
+//   400:
+//     description: The `id` or `artist_id` is missing.
+//     examples:
+//       application/json:
+//         $ref: 'postSong400.json'
+//       text/csv:
+//         $ref: 'postSong400.csv'
+//   201:
+//     description: Song was successfully created.
+//     examples:
+//       application/json:
+//         $ref: 'postSong201.json'
+//       text/csv:
+//         $ref: 'postSong201.csv'
+//   409:
+//     description: Song with `id` already exists.
+//     examples:
+//       application/json:
+//         $ref: 'postSong409.json'
+//       text/csv:
+//         $ref: 'postSong409.csv'
 func (s *server) handleCreateSong() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var data model.Song
@@ -228,7 +260,7 @@ func (s *server) handleCreateSong() http.HandlerFunc {
 			response := HttpResponse{
 				status: http.StatusCreated,
 				payload: RestResponse{
-					Data: data,
+					Data: &data,
 					Success: true,
 					Links: links,
 				},
@@ -249,6 +281,29 @@ func (s *server) handleCreateSong() http.HandlerFunc {
 	}
 }
 
+
+// swagger:operation PUT /songs/{song_id} Song Update
+// ---
+// description: Attempts to update the given song in the database.
+// parameters:
+//   - in: path
+//     name: song_id
+//     description: ID of the song.
+//     required: true
+//     type: string
+// content:
+//   application/json:
+//     $ref: 'rollrick.json'
+// responses:
+//   204:
+//     description: Song was updated.
+//   404:
+//     description: Song {song_id} does not exist.
+//     examples:
+//       application/json:
+//         $ref: putSong404.json
+//       text/csv:
+//         $ref: putSong404.csv
 func (s *server) handleUpdateSong() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := mux.Vars(r)["song_id"]

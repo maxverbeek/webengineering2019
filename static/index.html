@@ -13,7 +13,7 @@
         <img src="songle.svg">
       </div>
       <div id="search">
-        <input id="songleSearch" v-model="searchField">
+        <input id="songleSearch" v-on:keyup.enter="searchSong" v-model="searchField">
         <div>
           <button id="searchSong" v-on:click="searchSong">Search Song</button>
           <button id="searchArist" v-on:click="searchArtist">Search Artist</button>

@@ -24,17 +24,16 @@ import (
 //     description: Yields artist by ID.
 //     examples:
 //       application/json:
-//         - to: do
-//           when: we
-//           can: auto
-//           gen: this
-//           stupid: shit
-//       text/csv: |
-//         to,do,when,we,can
-//         auto,gen,this,stupid,shit
-//         auto,gen,this,stupid,shit
+//         $ref: 'artist200.json'
+//       text/csv:
+//         $ref: 'artist200.csv'
 //   404:
 //     description: Could not find the Artist by ID.
+//     examples:
+//       application/json:
+//         $ref: 'artist404.json'
+//       text/csv:
+//         $ref: 'artist404.csv'
 func (s *server) handleArtist() http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
@@ -95,20 +94,19 @@ type ArtistStats struct {
 //     type: string
 // responses:
 //   200:
-//     description: Yields artist's statistics by ID.
+//     description: Yields artist statistics by ID.
 //     examples:
 //       application/json:
-//         - to: do
-//           when: we
-//           can: auto
-//           gen: this
-//           stupid: shit
-//       text/csv: |
-//         to,do,when,we,can
-//         auto,gen,this,stupid,shit
-//         auto,gen,this,stupid,shit
+//         $ref: 'stats200.json'
+//       text/csv:
+//         $ref: 'stats200.csv'
 //   404:
-//     description: Could not find the artist by ID.
+//     description: Could not find the Artist by ID.
+//     examples:
+//       application/json:
+//         $ref: 'stats404.json'
+//       text/csv:
+//         $ref: 'stats404.csv'
 func (s *server) handleArtistStats() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := mux.Vars(r)["artist_id"]

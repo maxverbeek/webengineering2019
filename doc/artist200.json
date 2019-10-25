@@ -1,0 +1,20 @@
+{
+  "data": {
+    "familiarity": 0.754917646,
+    "hotttnesss": 0.507464243,
+    "id": "ARWPYQI1187FB4D55A",
+    "latitude": 53.45644,
+    "location": 0,
+    "longitude": -2.63265,
+    "name": "Rick Astley",
+    "similar": 0,
+    "terms": "dance pop",
+    "terms_freq": 1
+  },
+  "links": {
+    "self": "/api/v1/artists/ARWPYQI1187FB4D55A",
+    "songs": "/api/v1/songs?artist=ARWPYQI1187FB4D55A",
+    "stats": "/api/v1/artists/ARWPYQI1187FB4D55A/stats"
+  },
+  "success": true
+}

@@ -29,7 +29,8 @@ type ArtistWithLinks struct {
 //     type: string
 //   - in: query
 //     name: sort
-//     description: sort by `hotttnesss`.
+//     description: sort by `familiarity`, `hotttnesss`, `id`, `name`, `similar`.
+//       Will always be descending.
 //     required: false
 //     type: string
 //   - in: query
@@ -47,17 +48,9 @@ type ArtistWithLinks struct {
 //     description: Yields list of artists.
 //     examples:
 //       application/json:
-//         - to: do
-//           when: we
-//           can: auto
-//           gen: this
-//           stupid: shit
-//       text/csv: |
-//         to,do,when,we,can
-//         auto,gen,this,stupid,shit
-//         auto,gen,this,stupid,shit
-//   404:
-//     description: Could not find the Artist by ID.
+//         $ref: 'artists200.json'
+//       text/csv:
+//         $ref: 'artists200.csv'
 func (s *server) handleArtists() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 
