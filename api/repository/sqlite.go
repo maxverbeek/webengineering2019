@@ -125,7 +125,7 @@ func (s *SqliteStore) UpdateSong(query *Query, data map[string]interface{}) bool
 	fixedData := make(map[string]interface{})
 
 	for k, v := range data {
-		fixedData["song_" + k] = v
+		fixedData["song_"+k] = v
 	}
 
 	s.Db.Model(&song).Updates(fixedData)

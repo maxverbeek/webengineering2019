@@ -111,7 +111,7 @@ func (s *server) handleArtistStats() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := mux.Vars(r)["artist_id"]
 
-		if s.db.FindArtist(&repository.Query{ Id: id }) == nil {
+		if s.db.FindArtist(&repository.Query{Id: id}) == nil {
 			response := HttpResponse{
 				status: http.StatusNotFound,
 				payload: RestResponse{

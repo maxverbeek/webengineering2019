@@ -49,15 +49,15 @@ func (s *server) routes() {
 		Name("songs_one")
 
 	api.Path("/songs/{song_id}").
-	    Methods(http.MethodDelete).
+		Methods(http.MethodDelete).
 		HandlerFunc(s.handleDeleteSong())
 
 	api.Path("/songs").
-	    Methods(http.MethodPost).
+		Methods(http.MethodPost).
 		HandlerFunc(s.handleCreateSong())
 
 	api.Path("/songs/{song_id}").
-	    Methods(http.MethodPut).
+		Methods(http.MethodPut).
 		HandlerFunc(s.handleUpdateSong())
 
 	s.router.

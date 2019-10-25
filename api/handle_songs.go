@@ -1,10 +1,10 @@
 package api
 
 import (
-	"net/http"
-	"strconv"
 	"encoding/json"
 	"log"
+	"net/http"
+	"strconv"
 
 	"webeng/api/model"
 	"webeng/api/repository"
@@ -43,11 +43,30 @@ func (s *server) handleSong() http.HandlerFunc {
 
 		song := s.db.FindSong(&repository.Query{Id: id})
 
+		artist := s.db.FindArtist(&repository.Query{Id: song.ArtistId})
+
 		var response HttpResponse
 
 		if song != nil {
 
 			artisturl, _ := s.router.Get("artists_one").URL("artist_id", song.ArtistId)
+
+			call := s.service.Search.List("snippet").
+				Q(artist.ArtistName + " " + song.SongTitle).
+				MaxResults(1)
+			yresponse, err := call.Do()
+			videoLink := ""
+
+			if err != nil {
+				log.Println(err)
+			}
+
+			for _, item := range yresponse.Items {
+				switch item.Id.Kind {
+				case "youtube#video":
+					videoLink = "https://youtube.com/embed/" + item.Id.VideoId
+				}
+			}
 
 			response = HttpResponse{
 				status: http.StatusOK,
@@ -55,8 +74,9 @@ func (s *server) handleSong() http.HandlerFunc {
 					Success: true,
 					Data:    song,
 					Links: map[string]string{
-						"self":   r.URL.RequestURI(),
-						"artist": artisturl.RequestURI(),
+						"self":          r.URL.RequestURI(),
+						"artist":        artisturl.RequestURI(),
+						"youtube_embed": videoLink,
 					},
 				},
 			}
@@ -249,7 +269,6 @@ func (s *server) handleCreateSong() http.HandlerFunc {
 
 		if s.db.CreateSong(&data) {
 
-
 			links := make(Links)
 
 			songlink, _ := s.router.Get("songs_one").URL("song_id", data.SongId)
@@ -260,9 +279,9 @@ func (s *server) handleCreateSong() http.HandlerFunc {
 			response := HttpResponse{
 				status: http.StatusCreated,
 				payload: RestResponse{
-					Data: &data,
+					Data:    &data,
 					Success: true,
-					Links: links,
+					Links:   links,
 				},
 			}
 
@@ -280,7 +299,6 @@ func (s *server) handleCreateSong() http.HandlerFunc {
 		}
 	}
 }
-
 
 // swagger:operation PUT /songs/{song_id} Song Update
 // ---

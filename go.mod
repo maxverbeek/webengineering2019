@@ -8,4 +8,5 @@ require (
 	github.com/gorilla/mux v1.7.3
 	github.com/jinzhu/gorm v1.9.11
 	github.com/montanaflynn/stats v0.5.0
+	google.golang.org/api v0.3.1
 )

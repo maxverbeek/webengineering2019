@@ -124,5 +124,9 @@ body{
   text-decoration: underline;
 }
 
+#video {
+  margin-top: 10vh;
+}
+
 table tr:nth-child(even) {
 }

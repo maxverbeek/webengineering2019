@@ -14,11 +14,14 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"google.golang.org/api/googleapi/transport"
+	"google.golang.org/api/youtube/v3"
 )
 
 type server struct {
-	router *mux.Router
-	db     *repository.SqliteStore
+	service *youtube.Service
+	router  *mux.Router
+	db      *repository.SqliteStore
 }
 
 type Config struct {
@@ -40,9 +43,16 @@ func Run(conf *Config) error {
 		Db: gormdb,
 	}
 
+	client := &http.Client{
+		Transport: &transport.APIKey{Key: "AIzaSyCDjgmJS7aKZZt-BkOOkFWpMWCnCcmAn8k"},
+	}
+
+	serv, _ := youtube.New(client)
+
 	server := &server{
-		router: r,
-		db:     db,
+		service: serv,
+		router:  r,
+		db:      db,
 	}
 
 	// set up routes (routes.go)
