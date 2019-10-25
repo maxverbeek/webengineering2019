@@ -200,7 +200,7 @@ func (s *server) handleCreateSong() http.HandlerFunc {
 
 		json.NewDecoder(r.Body).Decode(&data)
 
-		if data.SongId != "" || data.ArtistId != "" {
+		if data.SongId == "" || data.ArtistId == "" {
 			response := HttpResponse{
 				status: http.StatusBadRequest,
 				payload: RestResponse{
