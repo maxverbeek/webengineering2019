@@ -35,11 +35,8 @@
       -->
     </div>
     <span id="footer">
-      <div class="leftJustify">
-        Delete Artist | Edit Artist
-      </div>
       <div class="rightJustify">
-        Add Song
+        <a v-bind:href="'/easong.html?artist=' + getArtist()" class="link">Add Song</a>
       </div>
     </span>
     <script src="artist.js"></script>

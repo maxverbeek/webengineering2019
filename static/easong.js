@@ -147,5 +147,8 @@ var footer = new Vue({
       song.message = e.response.data.message;
       footer.show = false;
     }
+  }else if(getParameterByName('artist') != null){
+    song.song.artist_id = getParameterByName('artist')
   }
+
 })();

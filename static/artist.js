@@ -17,7 +17,14 @@ var artist = new Vue({
     stats: {}
   }
 });
-
+var footer = new Vue({
+  el: '#footer',
+  methods: {
+    getArtist: function(){
+      return(artist.artist.id);
+    }
+  }
+});
 (async () => {
   if(getParameterByName('link') != null){
     response = await axios.get(getParameterByName('link'));
