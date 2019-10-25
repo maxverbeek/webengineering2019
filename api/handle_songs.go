@@ -43,11 +43,11 @@ func (s *server) handleSong() http.HandlerFunc {
 
 		song := s.db.FindSong(&repository.Query{Id: id})
 
-		artist := s.db.FindArtist(&repository.Query{Id: song.ArtistId})
-
 		var response HttpResponse
 
 		if song != nil {
+
+			artist := s.db.FindArtist(&repository.Query{Id: song.ArtistId})
 
 			artisturl, _ := s.router.Get("artists_one").URL("artist_id", song.ArtistId)
 
