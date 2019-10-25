@@ -257,7 +257,18 @@ func (s *server) handleUpdateSong() http.HandlerFunc {
 
 		json.NewDecoder(r.Body).Decode(&data)
 
-		s.db.UpdateSong(&repository.Query{Id: id}, data)
+		if !s.db.UpdateSong(&repository.Query{Id: id}, data) {
+			response := HttpResponse{
+				status: http.NotFound,
+				payload: RestResponse{
+					Success: false,
+					Message: "song not found",
+				},
+			}
+
+			response.Render(w, r)
+			return
+		}
 
 		log.Printf("%+v\n", data)
 
