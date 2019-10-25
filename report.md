@@ -71,4 +71,16 @@ this by means of defining a lot of openapi definitions in our code, above every
 handler for every endpoint. This makes our code look quite bloated, but it
 makes it very easy to generate documentation. This tool can be installed using
 `go install github.com/go-swagger/go-swagger/cmd/swagger` -- But worry not! You
-need not install this, as we have generated the documentation for you.
+need not install this, as we have generated the documentation for you (`doc/documentation.html`).
+
+## Frontend
+
+For our front-end we opted to use Vue.js since it provides an easy way of
+binding a view to a model. Since our front-end is kept minimal by design, we
+wanted something that does not enforce excessive infrastructure. Vue does
+exactly this.
+
+We did not make a single-page application, but rather serve some html and
+javascript files from the server. The html files are not parsed, and are
+completely empty when the client receives them. The javascript (Vue) is then
+ran, and queries the backend API to fill the files with data.
