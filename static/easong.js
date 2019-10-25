@@ -120,7 +120,7 @@ var footer = new Vue({
         }
       }
       axios({
-        method: 'put',
+        method: 'patch',
         url: song.link,
         data: dat,
         headers: {

@@ -381,7 +381,7 @@ paths:
               $ref: song404.csv
       tags:
       - Song
-    put:
+    patch:
       description: Attempts to update the given song in the database.
       operationId: Update
       parameters:

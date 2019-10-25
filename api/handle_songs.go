@@ -300,7 +300,7 @@ func (s *server) handleCreateSong() http.HandlerFunc {
 	}
 }
 
-// swagger:operation PUT /songs/{song_id} Song Update
+// swagger:operation PATCH /songs/{song_id} Song Update
 // ---
 // description: Attempts to update the given song in the database.
 // parameters:

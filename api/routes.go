@@ -57,7 +57,7 @@ func (s *server) routes() {
 		HandlerFunc(s.handleCreateSong())
 
 	api.Path("/songs/{song_id}").
-		Methods(http.MethodPut).
+		Methods(http.MethodPatch).
 		HandlerFunc(s.handleUpdateSong())
 
 	s.router.

@@ -66,4 +66,9 @@ definitions are also how we seed the database from the given csv file (see
 
 ## Documentation
 
-The documentation is generated using openapi (formerly known as swagger). We do this by means of defining a lot of openapi definitions in our code, above every handler for every endpoint. This makes our code look quite bloated, but it makes it very easy to generate documentation. This tool can be installed using `go install github.com/go-swagger/go-swagger/cmd/swagger` -- But worry not! You need not install this, as we have generated the documentation for you.
+The documentation is generated using openapi (formerly known as swagger). We do
+this by means of defining a lot of openapi definitions in our code, above every
+handler for every endpoint. This makes our code look quite bloated, but it
+makes it very easy to generate documentation. This tool can be installed using
+`go install github.com/go-swagger/go-swagger/cmd/swagger` -- But worry not! You
+need not install this, as we have generated the documentation for you.
