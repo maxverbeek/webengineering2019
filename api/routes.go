@@ -3,6 +3,7 @@
 // This is an api for accessing an manipulating a music database.
 //
 // Version: 0.1.0
+// host: http://songle.com
 // basePath: /api/v1
 //
 // Produces:

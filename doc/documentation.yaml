@@ -180,6 +180,7 @@ definitions:
         x-go-name: SongYear
     type: object
     x-go-package: webeng/api/model
+host: http://songle.com
 info:
   description: This is an api for accessing an manipulating a music database.
   title: Music API
