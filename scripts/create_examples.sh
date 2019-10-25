@@ -23,10 +23,10 @@ curl -s -H "Accept: text/csv" "localhost:8080/api/v1/artists/IDONTEXIST/stats" >
 
 # PUT
 
-curl -s -X PUT --data-binary "@doc/rickroll.json" -H "Content-Type: application/json" "localhost:8080/api/v1/songs/IDONTEXIST" > doc/putSong404.json
-curl -s -H "Accept: text/csv" -X PUT --data-binary "@doc/rickroll.json" -H "Content-Type: application/json" "localhost:8080/api/v1/songs/IDONTEXIST" > doc/putSong404.csv
+curl -s -X PATCH --data-binary "@doc/rickroll.json" -H "Content-Type: application/json" "localhost:8080/api/v1/songs/IDONTEXIST" > doc/putSong404.json
+curl -s -H "Accept: text/csv" -X PATCH --data-binary "@doc/rickroll.json" -H "Content-Type: application/json" "localhost:8080/api/v1/songs/IDONTEXIST" > doc/putSong404.csv
 
-curl -sL -w "%{http_code}\n" -X PUT --data-binary "@doc/rickroll.json" -H "Content-Type: application/json" "localhost:8080/api/v1/songs/SOCWJDB12A58A776AF"
+curl -sL -w "%{http_code}\n" -X PATCH --data-binary "@doc/rickroll.json" -H "Content-Type: application/json" "localhost:8080/api/v1/songs/SOCWJDB12A58A776AF"
 
 #DELETE
 
