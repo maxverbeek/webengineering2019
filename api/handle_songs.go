@@ -259,7 +259,7 @@ func (s *server) handleUpdateSong() http.HandlerFunc {
 
 		if !s.db.UpdateSong(&repository.Query{Id: id}, data) {
 			response := HttpResponse{
-				status: http.NotFound,
+				status: http.StatusNotFound,
 				payload: RestResponse{
 					Success: false,
 					Message: "song not found",

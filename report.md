@@ -35,4 +35,6 @@ package needs to be in a module. A module is a directory that contains
 a `go.mod` file, such as the root directory of this repository. That makes
 `api`, `api/repository`, `api/model` and `cmd` four different packages.
 
-The main package of interest is the `api` package, which contains the main `server` struct, the routes, and the individual handlers for every endpoint. These endpoints can be found in the `handle_*.go` files.
+The main package of interest is the `api` package, which contains the main
+`server` struct, the routes, and the individual handlers for every endpoint.
+These endpoints can be found in the `handle_*.go` files.
