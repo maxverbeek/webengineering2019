@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="style.css"/>
+  </head>
+  <body>
+    <div id="bar" v-on:keyup.enter="search">
+      <a href="/index.html"> <img src="songle.svg"> </a>
+      <span class="centerRow">
+        Search for:
+        <select v-model="searchType">
+          <option>Songs</option>
+          <option>Artists</option>
+        </select>
+        | Filter by
+        year: <input v-model="yearField" size="4">
+        genre: <input v-model="genreField" size="16">
+        | Sort by
+        <select v-model="sortBy">
+          <option>None</option>
+          <option>Hotttnesss</option>
+          <option>ID</option>
+          <option v-show="searchType === 'Songs'">Title</option>
+          <option v-show="searchType === 'Songs'">Tempo</option>
+          <option v-show="searchType === 'Songs'">Year</option>
+          <option v-show="searchType === 'Artists'">Name</option>
+          <option v-show="searchType === 'Artists'">Familiarity</option>
+          <option v-show="searchType === 'Artists'">Similar</option>
+        </select>
+        |
+        <input v-model="searchField">
+        <button v-on:click="search">Search</button>
+      </span>
+    </div>
+    <div id="table">
+      <table style="width:100%">
+        <tr>
+          <th v-for="header in headers">
+            {{header}}
+          </th>
+        </tr>
+        <tr v-for="row in rows">
+          <td v-for="data in row">
+            <template v-if="data[1] === null">
+              {{data[0]}}
+            </template>
+            <template v-else>
+              <a v-bind:href="data[1]"> {{data[0]}}</a>
+            </template>
+          </td>
+        </tr>
+      </table>
+      <!--
+      <pre>
+      {{response}}
+      </pre>
+      -->
+    </div>
+    <span id="footer" >
+      <span class="leftJustify">
+        items per page: <input v-on:keyup.enter="search" v-model="limit" size="4">
+      </span>
+      <span class="centerRow">
+        <a v-on:click="getCsv" class="link">download csv</a>
+      </span>
+      <span class="rightJustify">
+        <div v-if="prev != null">
+          <a v-on:click="previousPage" class="link">&lt</a> &nbsp
+        </div>
+        <div v-else>
+          - &nbsp
+        </div>
+        {{page+1}}
+        <div v-if="next != null">
+          &nbsp <a v-on:click="nextPage" class="link">&gt</a>
+        </div>
+        <div v-else>
+          &nbsp -
+        </div>
+      </span>
+    </span>
+    <script src="search.js"></script>
+  </body>
+</html>
+
+

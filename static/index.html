@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="style.css"/>
+  </head>
+  <body class="centering">
+    <div class="container">
+      <div id="logo">
+        <img src="songle.svg">
+      </div>
+      <div id="search">
+        <input id="songleSearch" v-on:keyup.enter="searchSong" v-model="searchField">
+        <div>
+          <button id="searchSong" v-on:click="searchSong">Search Song</button>
+          <button id="searchArist" v-on:click="searchArtist">Search Artist</button>
+        </div>
+      </div>
+    </div>
+      <a id="addArtist" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"> Add_Artist </a>
+    <script src="index.js"></script>
+  </body>
+</html>
+
+

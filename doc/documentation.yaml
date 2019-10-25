@@ -1,0 +1,408 @@
+basePath: /api/v1
+definitions:
+  Artist:
+    description: The artist model
+    properties:
+      familiarity:
+        format: double
+        type: number
+        x-go-name: ArtistFamiliarity
+      hotttnesss:
+        format: double
+        type: number
+        x-go-name: ArtistHotttnesss
+      id:
+        type: string
+        x-go-name: ArtistId
+      latitude:
+        format: double
+        type: number
+        x-go-name: ArtistLatitude
+      location:
+        format: int64
+        type: integer
+        x-go-name: ArtistLocation
+      longitude:
+        format: double
+        type: number
+        x-go-name: ArtistLongitude
+      name:
+        type: string
+        x-go-name: ArtistName
+      similar:
+        format: double
+        type: number
+        x-go-name: ArtistSimilar
+      terms:
+        type: string
+        x-go-name: ArtistTerms
+      terms_freq:
+        format: double
+        type: number
+        x-go-name: ArtistTermsFreq
+    type: object
+    x-go-package: webeng/api/model
+  Release:
+    description: The release (album) model
+    properties:
+      ReleaseId:
+        format: int64
+        type: integer
+      ReleaseName:
+        format: int64
+        type: integer
+    type: object
+    x-go-package: webeng/api/model
+  Song:
+    description: The Song model
+    properties:
+      artist_id:
+        type: string
+        x-go-name: ArtistId
+      artist_mbtags:
+        format: double
+        type: number
+        x-go-name: SongArtistMbtags
+      artist_mbtags_count:
+        format: double
+        type: number
+        x-go-name: SongArtistMbtagsCount
+      bars_confidence:
+        format: double
+        type: number
+        x-go-name: SongBarsConfidence
+      bars_start:
+        format: double
+        type: number
+        x-go-name: SongBarsStart
+      beats_confidence:
+        format: double
+        type: number
+        x-go-name: SongBeatsConfidence
+      beats_start:
+        format: double
+        type: number
+        x-go-name: SongBeatsStart
+      duration:
+        format: double
+        type: number
+        x-go-name: SongDuration
+      end_of_fade_in:
+        format: double
+        type: number
+        x-go-name: SongEndFadeIn
+      hotttnesss:
+        format: double
+        type: number
+        x-go-name: SongHotttnesss
+      id:
+        type: string
+        x-go-name: SongId
+      key:
+        format: double
+        type: number
+        x-go-name: SongKey
+      key_confidence:
+        format: double
+        type: number
+        x-go-name: SongKeyConfidence
+      loudness:
+        format: double
+        type: number
+        x-go-name: SongLoudness
+      mode:
+        format: int64
+        type: integer
+        x-go-name: SongMode
+      mode_confidence:
+        format: double
+        type: number
+        x-go-name: SongModeConfidence
+      release_id:
+        format: int64
+        type: integer
+        x-go-name: ReleaseId
+      start_of_fade_out:
+        format: double
+        type: number
+        x-go-name: SongStartFadeOut
+      tatums_confidence:
+        format: double
+        type: number
+        x-go-name: SongTatumsConfidence
+      tatums_start:
+        format: double
+        type: number
+        x-go-name: SongTatumsStart
+      tempo:
+        format: double
+        type: number
+        x-go-name: SongTempo
+      time_signature:
+        format: double
+        type: number
+        x-go-name: SongTimeSignature
+      time_signature_confidence:
+        format: double
+        type: number
+        x-go-name: SongTimeSignatureConfidence
+      title:
+        type: string
+        x-go-name: SongTitle
+      year:
+        format: int64
+        type: integer
+        x-go-name: SongYear
+    type: object
+    x-go-package: webeng/api/model
+  SongShort:
+    properties:
+      artist_id:
+        type: string
+        x-go-name: ArtistId
+      duration:
+        format: double
+        type: number
+        x-go-name: SongDuration
+      id:
+        type: string
+        x-go-name: SongId
+      release_id:
+        format: int64
+        type: integer
+        x-go-name: ReleaseId
+      title:
+        type: string
+        x-go-name: SongTitle
+      year:
+        format: int64
+        type: integer
+        x-go-name: SongYear
+    type: object
+    x-go-package: webeng/api/model
+host: http://songle.com
+info:
+  description: This is an api for accessing an manipulating a music database.
+  title: Music API
+  version: 0.1.0
+paths:
+  /artists:
+    get:
+      description: Gets a list of artists.
+      operationId: Artists
+      parameters:
+      - description: Filter by name of artist.
+        in: query
+        name: name
+        type: string
+      - description: Filter by artist genre.
+        in: query
+        name: genre
+        type: string
+      - description: sort by `familiarity`, `hotttnesss`, `id`, `name`, `similar`.
+          Will always be descending.
+        in: query
+        name: sort
+        type: string
+      - description: The number of artists per page.
+        in: query
+        name: limit
+        type: integer
+      - description: Retrieves the nth page of `limit`.
+        in: query
+        name: page
+        type: integer
+      responses:
+        "200":
+          description: Yields list of artists.
+          examples:
+            application/json:
+              $ref: artists200.json
+            text/csv:
+              $ref: artists200.csv
+  /artists/{artist_id}:
+    get:
+      description: Gets an artist by the given ID.
+      operationId: Artist
+      parameters:
+      - description: ID of the artist.
+        in: path
+        name: artist_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Yields artist by ID.
+          examples:
+            application/json:
+              $ref: artist200.json
+            text/csv:
+              $ref: artist200.csv
+        "404":
+          description: Could not find the Artist by ID.
+          examples:
+            application/json:
+              $ref: artist404.json
+            text/csv:
+              $ref: artist404.csv
+  /artists/{artist_id}/stats:
+    get:
+      description: Gets the statistics of an artist by the given ID.
+      operationId: ArtistStats
+      parameters:
+      - description: ID of the artist.
+        in: path
+        name: artist_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Yields artist statistics by ID.
+          examples:
+            application/json:
+              $ref: stats200.json
+            text/csv:
+              $ref: stats200.csv
+        "404":
+          description: Could not find the Artist by ID.
+          examples:
+            application/json:
+              $ref: stats404.json
+            text/csv:
+              $ref: stats404.csv
+  /songs:
+    get:
+      description: Gets a list of songs
+      operationId: Songs
+      parameters:
+      - description: Filter by artist ID
+        in: query
+        name: artist_id
+        type: string
+      - description: Filter by year released.
+        in: query
+        name: year
+        type: integer
+      - description: Filter by song title.
+        in: query
+        name: name
+        type: string
+      - description: Filter by artist genre.
+        in: query
+        name: genre
+        type: string
+      - description: sort by `duration`, `hotttnesss`, `id`, `title`, `tempo` or `year`.
+          Will always be descending.
+        in: query
+        name: sort
+        type: string
+      - description: The number of songs per page.
+        in: query
+        name: limit
+        type: integer
+      - description: Retrieves the nth page of `limit`.
+        in: query
+        name: page
+        type: integer
+      responses:
+        "200":
+          description: Yields list of songs.
+          examples:
+            application/json:
+              $ref: songs200.json
+            text/csv:
+              $ref: songs200.csv
+    post:
+      description: Attempts to add the given song to the database. Only `id` and `artist_id`
+        are required, missing or extra fields are ignored.
+      operationId: Create
+      responses:
+        "201":
+          description: Song was successfully created.
+          examples:
+            application/json:
+              $ref: postSong201.json
+            text/csv:
+              $ref: postSong201.csv
+        "400":
+          description: The `id` or `artist_id` is missing.
+          examples:
+            application/json:
+              $ref: postSong400.json
+            text/csv:
+              $ref: postSong400.csv
+        "409":
+          description: Song with `id` already exists.
+          examples:
+            application/json:
+              $ref: postSong409.json
+            text/csv:
+              $ref: postSong409.csv
+      tags:
+      - Song
+  /songs/{song_id}:
+    delete:
+      description: Attempts to Delete the song with the given ID.
+      operationId: Delete
+      parameters:
+      - description: ID of the song.
+        in: path
+        name: song_id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: Song was deleted.
+      tags:
+      - Song
+    get:
+      description: Gets a song by the given ID.
+      operationId: Read
+      parameters:
+      - description: ID of the song.
+        in: path
+        name: song_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Yields song by ID.
+          examples:
+            application/json:
+              $ref: song200.json
+            text/csv:
+              $ref: song200.csv
+        "404":
+          description: Could not find the song by ID.
+          examples:
+            application/json:
+              $ref: song404.json
+            text/csv:
+              $ref: song404.csv
+      tags:
+      - Song
+    put:
+      description: Attempts to update the given song in the database.
+      operationId: Update
+      parameters:
+      - description: ID of the song.
+        in: path
+        name: song_id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: Song was updated.
+        "404":
+          description: Song {song_id} does not exist.
+          examples:
+            application/json:
+              $ref: putSong404.json
+            text/csv:
+              $ref: putSong404.csv
+      tags:
+      - Song
+produces:
+- application/json
+- text/csv
+swagger: "2.0"

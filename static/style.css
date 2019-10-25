@@ -1,0 +1,132 @@
+html{
+  width:100%;
+  min-height:100%;
+  margin:0;
+}
+body{
+  padding-top:70px;
+  padding-bottom: 40px;
+}
+
+#bar{
+  display: flex;
+  flex-direction: row;
+  position:fixed;
+  left:0;
+  top:0;
+  width:100%;
+  height: 50px;
+  z-index:200;
+  padding: 10px;
+  background-color: white;
+}
+
+#footer {
+  display: flex;
+  box-sizing: border-box;
+  flex-direction: row;
+  position: fixed;
+  left:0;
+  bottom:0;
+  width:100%;
+  z-index:100%;
+  padding:10px;
+  background-color: white;
+}
+
+.leftJustify{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.rightJustify{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+#bar img{
+  margin-right: 10px;
+  display: inline-block;
+}
+
+.centerRow{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.centering{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+
+.centering .container{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  margin-top: 25vh;
+  width: 50%;
+}
+.centering img{
+  width: auto;
+  height: 100%;
+}
+
+#logo {
+  width: auto;
+  height: 15vh;
+}
+
+#search {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+}
+
+#searchSong {
+  margin-right:15px;
+}
+
+#searchArtist {
+  margin-left: 15px;
+}
+
+#songleSearch {
+  width:50%;
+  margin: 10px;
+}
+
+#addArtist {
+  margin-top: 20vh;
+  color: transparent;
+}
+
+.link {
+  color: blue;
+  cursor: pointer;
+}
+.link:hover {
+  text-decoration: underline;
+}
+
+#video {
+  margin-top: 10vh;
+}
+
+table tr:nth-child(even) {
+}

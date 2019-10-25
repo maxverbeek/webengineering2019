@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="style.css"/>
+  </head>
+  <body>
+    <div id="bar" v-on:keyup.enter="search">
+      <a href="/index.html"> <img src="songle.svg"> </a>
+      <span class="centerRow">
+      </span>
+    </div>
+    <div id="song" class="centering">
+      <table v-if="code == 200">
+        <tr><td colspan="2"><h2>{{song.title}}</h2></td></tr>
+        <tr><td>ID</td><td>{{song.id}}</td></tr>
+        <tr><td>Artist</td>
+          <td><a v-bind:href="'artist.html?link=' + links.artist">
+          {{artist.name}}
+        </a></td></tr>
+        <tr><td>Artist genre</td><td>{{artist.terms}}</td></tr>
+        <tr v-if="song.year != 0"><td>Release year</td><td>{{song.year}}</td></tr>
+        <tr><td>Duration</td><td>{{song.duration}}s</td></tr>
+        <tr><td>Tempo</td><td>{{song.tempo}} bpm</td></tr>
+      </table>
+      <div v-else>
+        <h3> {{code}}: {{message}} </h3>
+      </div>
+      <div id="video" v-if="links.youtube_embed != ''">
+        <iframe width="560" height="315" v-bind:src="links.youtube_embed" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <span id="footer">
+      <div class="leftJustify" v-if="show == true">
+        <a v-on:click="del" class="link">{{txt}} Song</a>
+        &nbsp | &nbsp
+        <a v-bind:href="'easong.html?link=' + link">Edit Song</a>
+      </div>
+    </span>
+    <script src="song.js"></script>
+  </body>
+</html>
+
+

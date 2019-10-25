@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="style.css"/>
+  </head>
+  <body>
+    <div id="bar" v-on:keyup.enter="search">
+      <a href="/index.html"> <img src="songle.svg"> </a>
+      <span class="centerRow">
+        <h1 v-if="edit == false"> Add Song </h1>
+        <h1 v-else> Edit Song </h1>
+      </span>
+    </div>
+    <div id="song" class="centering">
+      <table v-if="code == 200">
+        <tr v-for="key in Object.keys(song)">
+          <td> {{key}}</td><td><input v-model="song[key]"
+            v-bind:placeholder="pholders[key]"></td>
+        </tr>
+      </table>
+      <div v-else>
+        <h3> {{code}}: {{message}} </h3>
+      </div>
+      <!--
+      <pre>
+        {{song}}
+        {{artist}}
+        {{links}}
+     </pre>
+      -->
+    </div>
+
+    <span id="footer">
+      <div class="centerRow">
+        <a v-if="edit" v-on:click="editSong" class="link">Edit Song</a>
+        <a v-else v-on:click="addSong" class="link">Add Song</a>
+      </div>
+    </span>
+    <script src="easong.js"></script>
+  </body>
+</html>
+
+

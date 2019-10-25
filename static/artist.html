@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="style.css"/>
+  </head>
+  <body>
+    <div id="bar" v-on:keyup.enter="search">
+      <a href="/index.html"> <img src="songle.svg"> </a>
+      <span class="centerRow">
+      </span>
+    </div>
+    <div id="artist" class="centering">
+      <table>
+        <tr><td colspan="2"><h2>{{artist.name}}</h2></td></tr>
+        <tr><td>ID</td><td>{{artist.id}}</td></tr>
+        <tr><td>Artist genre</td><td>{{artist.terms}}</td></tr>
+        <tr><td>Songs</td><td><a v-bind:href="'/search.html?artist=' + artist.id"> {{songs.length}} </a></td></tr>
+
+        <tr><td colspan="2"><strong>Artist popularity (hotttnesss)</strong></td></tr>
+        <tr><td>Mean</td><td>{{stats.mean}}</td></tr>
+        <tr><td>Median</td><td>{{stats.median}}</td></tr>
+        <tr><td>Standard Deviation</td><td>{{stats.standard_deviation}}</td></tr>
+      </table>
+      <!--
+      <pre>
+        {{song}}
+        {{artist}}
+        {{links}}
+        {{stats}}
+     </pre>
+      -->
+    </div>
+    <span id="footer">
+      <div class="leftJustify">
+        Delete Artist | Edit Artist
+      </div>
+      <div class="rightJustify">
+        Add Song
+      </div>
+    </span>
+    <script src="artist.js"></script>
+  </body>
+</html>
+
+

@@ -1,0 +1,159 @@
+{
+  "data": [
+    {
+      "familiarity": 0.877213746,
+      "hotttnesss": 1.082502557,
+      "id": "ARRH63Y1187FB47783",
+      "latitude": 0,
+      "location": 0,
+      "longitude": 0,
+      "name": "Kanye West / Lupe Fiasco",
+      "similar": 0,
+      "terms": "hip hop",
+      "terms_freq": 1,
+      "links": {
+        "self": "/api/v1/artists/ARRH63Y1187FB47783"
+      }
+    },
+    {
+      "familiarity": 0.90284076,
+      "hotttnesss": 1.021255588,
+      "id": "ARF8HTQ1187B9AE693",
+      "latitude": 0,
+      "location": 0,
+      "longitude": 0,
+      "name": "Daft Punk",
+      "similar": 0,
+      "terms": "techno",
+      "terms_freq": 1,
+      "links": {
+        "self": "/api/v1/artists/ARF8HTQ1187B9AE693"
+      }
+    },
+    {
+      "familiarity": 0.845601887,
+      "hotttnesss": 1.005941966,
+      "id": "ARTDQRC1187FB4EFD4",
+      "latitude": 0,
+      "location": 0,
+      "longitude": 0,
+      "name": "Black Eyed Peas",
+      "similar": 0,
+      "terms": "hip hop",
+      "terms_freq": 1,
+      "links": {
+        "self": "/api/v1/artists/ARTDQRC1187FB4EFD4"
+      }
+    },
+    {
+      "familiarity": 0.88974922,
+      "hotttnesss": 0.922412443,
+      "id": "ARS54I31187FB46721",
+      "latitude": 0,
+      "location": 0,
+      "longitude": 0,
+      "name": "Taylor Swift",
+      "similar": 0,
+      "terms": "country",
+      "terms_freq": 0.970216931,
+      "links": {
+        "self": "/api/v1/artists/ARS54I31187FB46721"
+      }
+    },
+    {
+      "familiarity": 0.865021512,
+      "hotttnesss": 0.916053228,
+      "id": "ARJ7KF01187B98D717",
+      "latitude": 0,
+      "location": 0,
+      "longitude": 0,
+      "name": "Coldplay",
+      "similar": 0,
+      "terms": "piano rock",
+      "terms_freq": 0.91162502,
+      "links": {
+        "self": "/api/v1/artists/ARJ7KF01187B98D717"
+      }
+    },
+    {
+      "familiarity": 0.917698884,
+      "hotttnesss": 0.908202619,
+      "id": "ARKU3Z61187FB51DCA",
+      "latitude": 13.11199,
+      "location": 0,
+      "longitude": -59.59895,
+      "name": "Rihanna",
+      "similar": 0,
+      "terms": "dance pop",
+      "terms_freq": 1,
+      "links": {
+        "self": "/api/v1/artists/ARKU3Z61187FB51DCA"
+      }
+    },
+    {
+      "familiarity": 0.842673051,
+      "hotttnesss": 0.872838921,
+      "id": "ARBS1OC1187FB44CAF",
+      "latitude": 0,
+      "location": 0,
+      "longitude": 0,
+      "name": "T.I.",
+      "similar": 0,
+      "terms": "gangster rap",
+      "terms_freq": 0.999981371,
+      "links": {
+        "self": "/api/v1/artists/ARBS1OC1187FB44CAF"
+      }
+    },
+    {
+      "familiarity": 0.856448924,
+      "hotttnesss": 0.854637828,
+      "id": "ARPDVPJ1187B9ADBE9",
+      "latitude": 0,
+      "location": 0,
+      "longitude": 0,
+      "name": "Usher",
+      "similar": 0,
+      "terms": "hip hop",
+      "terms_freq": 1,
+      "links": {
+        "self": "/api/v1/artists/ARPDVPJ1187B9ADBE9"
+      }
+    },
+    {
+      "familiarity": 0.98993857,
+      "hotttnesss": 0.843430844,
+      "id": "ARUDYKB11F4C83C269",
+      "latitude": 29.95369,
+      "location": 0,
+      "longitude": -90.07771,
+      "name": "Lil Wayne",
+      "similar": 0,
+      "terms": "hip hop",
+      "terms_freq": 1,
+      "links": {
+        "self": "/api/v1/artists/ARUDYKB11F4C83C269"
+      }
+    },
+    {
+      "familiarity": 0.905477001,
+      "hotttnesss": 0.843380274,
+      "id": "ARF5M7Q1187FB501E8",
+      "latitude": 0,
+      "location": 0,
+      "longitude": 0,
+      "name": "Maroon 5",
+      "similar": 0,
+      "terms": "pop",
+      "terms_freq": 0.969733877,
+      "links": {
+        "self": "/api/v1/artists/ARF5M7Q1187FB501E8"
+      }
+    }
+  ],
+  "links": {
+    "next": "/api/v1/artists?limit=10&page=1&sort=hotttnesss",
+    "self": "/api/v1/artists?limit=10&page=0&sort=hotttnesss"
+  },
+  "success": true
+}

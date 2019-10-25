@@ -1,0 +1,35 @@
+{
+  "data": {
+    "artist_id": "ARWPYQI1187FB4D55A",
+    "release_id": 786795,
+    "id": "SOCWJDB12A58A776AF",
+    "title": "Never Gonna Give You Up",
+    "year": 1987,
+    "duration": 211.69587,
+    "artist_mbtags": 0,
+    "artist_mbtags_count": 1,
+    "bars_confidence": 0.029,
+    "bars_start": 0.42384,
+    "beats_confidence": 1,
+    "beats_start": 0.42384,
+    "end_of_fade_in": 0.139,
+    "hotttnesss": 0.864248831,
+    "key": 1,
+    "key_confidence": 0.324,
+    "loudness": -7.75,
+    "mode": 1,
+    "mode_confidence": 0.434,
+    "start_of_fade_out": 198.536,
+    "tatums_confidence": 0.988,
+    "tatums_start": 0.15965,
+    "tempo": 113.359,
+    "time_signature": 4,
+    "time_signature_confidence": 0.634
+  },
+  "links": {
+    "artist": "/api/v1/artists/ARWPYQI1187FB4D55A",
+    "self": "/api/v1/songs/SOCWJDB12A58A776AF",
+    "youtube_embed": "https://youtube.com/embed/dQw4w9WgXcQ"
+  },
+  "success": true
+}
